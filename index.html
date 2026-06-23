@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>project-io</title>
+<style>
+:root {
+  --bg:           #13151a;
+  --bg-raised:    #1a1d24;
+  --bg-card:      #1e2229;
+  --bg-hover:     #252a33;
+  --rule:         #2e333d;
+  --ink:          #eef0f3;
+  --ink-soft:     #b4bac6;
+  --ink-faint:    #7d8491;
+  --accent:       #7eb8ff;
+  --accent-hi:    #a8d0ff;
+  --accent-bg:    #162035;
+  --green:        #4db885;
+  --green-bg:     #0d2318;
+  --orange:       #f5a55a;
+  --orange-bg:    #2a1800;
+  --shadow:       0 1px 3px rgba(0,0,0,.45), 0 4px 18px rgba(0,0,0,.35);
+  --radius:       10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hi); text-decoration: underline; }
+code, pre {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: .88em;
+}
+pre {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: .85rem 1.1rem;
+  overflow-x: auto;
+  color: var(--ink-soft);
+  margin: .75rem 0;
+}
+code {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .1em .38em;
+  color: var(--accent-hi);
+}
+pre code { background: none; border: none; padding: 0; color: inherit; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+.site-nav {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--rule);
+  padding: .75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.site-nav .inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.site-nav .brand {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .03em;
+  color: var(--accent-hi);
+  white-space: nowrap;
+}
+.site-nav .brand img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; }
+.site-nav a {
+  font-size: .84rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--accent-hi); text-decoration: none; }
+.site-nav a.active { color: var(--accent-hi); font-weight: 700; }
+.nav-sep { flex: 1; }
+.page-head {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.8rem;
+}
+.page-head-text { flex: 1; }
+.page-head-logo img {
+  width: 96px;
+  height: 96px;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+.eyebrow {
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent-hi);
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+h1.title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -.015em;
+  margin-bottom: .5rem;
+}
+.subtitle {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  max-width: 58ch;
+  line-height: 1.55;
+}
+h2.sh {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 2.2rem 0 .9rem;
+  padding-bottom: .45rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+h3.sh3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 .5rem;
+  color: var(--ink-soft);
+}
+p.prose { margin-bottom: .85rem; color: var(--ink-soft); }
+p.prose:last-child { margin-bottom: 0; }
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow);
+  margin-bottom: .7rem;
+}
+.card:hover { border-color: var(--accent); background: var(--bg-hover); }
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .25rem;
+}
+.card-sub {
+  font-size: .82rem;
+  color: var(--ink-faint);
+  margin-bottom: .4rem;
+}
+.card-desc {
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.badge {
+  display: inline-block;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .16rem .5rem;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent-hi);
+  margin-right: .4rem;
+}
+.badge.bonus { background: #2a1800; color: var(--orange); }
+.info-box {
+  background: var(--green-bg);
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  padding: .9rem 1.1rem;
+  margin: 1rem 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.info-box strong { color: var(--green); }
+.warn-box {
+  background: var(--orange-bg);
+  border: 1px solid var(--orange);
+  border-radius: var(--radius);
+  padding: .9rem 1.1rem;
+  margin: 1rem 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.warn-box strong { color: var(--orange); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+  margin: .75rem 0 1.25rem;
+}
+th {
+  text-align: left;
+  padding: .5rem .75rem;
+  background: var(--bg-raised);
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-bottom: 1px solid var(--rule);
+}
+td {
+  padding: .5rem .75rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+td code { font-size: .82em; }
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin: 1.4rem 0;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--accent);
+  color: #0c1118;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .12s;
+}
+.cta:hover { background: var(--accent-hi); color: #0c1118; text-decoration: none; }
+.cta.secondary {
+  background: var(--bg-card);
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+}
+.cta.secondary:hover { background: var(--bg-hover); color: var(--ink); border-color: var(--accent); }
+ol.steps, ul.bullets {
+  margin: .5rem 0 .9rem 1.3rem;
+  color: var(--ink-soft);
+  font-size: .93rem;
+  line-height: 1.7;
+}
+ol.steps li, ul.bullets li { margin-bottom: .2rem; }
+footer.page-foot {
+  margin-top: 3.5rem;
+  padding: 1.8rem 0 2rem;
+  border-top: 1px solid var(--rule);
+  font-size: .8rem;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+footer.page-foot h2 {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+  margin: 0 0 .5rem;
+  font-weight: 700;
+}
+footer.page-foot p { margin-bottom: .5rem; }
+footer.page-foot ul { margin: .2rem 0 .5rem 1.2rem; }
+footer.page-foot li { margin-bottom: .2rem; }
+.author-line { color: var(--ink-soft); margin-bottom: 1rem; }
+.author-line strong { color: var(--ink); }
+@media (max-width: 600px) {
+  h1.title { font-size: 1.65rem; }
+  .wrap { padding: 0 1rem; }
+  .page-head { flex-direction: column-reverse; gap: 1rem; }
+  .page-head-logo img { width: 72px; height: 72px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="inner">
+    <span class="brand">
+      <img src="web/dook.png" alt="project-io logo">
+      project&#8209;io
+    </span>
+    <a href="index.html" class="active">Home</a>
+    <a href="web/search.html">Notebook Index</a>
+    <a href="web/challenges.html">Challenges</a>
+    <a href="web/data.html">Datasets</a>
+    <a href="web/how_to.html">How to Use</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="page-head">
+  <div class="page-head-text">
+    <p class="eyebrow">Machine Learning Course</p>
+    <h1 class="title">project&#8209;io</h1>
+    <p class="subtitle">A self-paced series of Jupyter notebooks covering Python, statistics, classical machine learning, neural networks, unsupervised learning, and model evaluation — delivered as a self-contained Docker environment. Hosted at <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a>.</p>
+  </div>
+  <div class="page-head-logo">
+    <img src="web/dook.png" alt="project-io logo">
+  </div>
+</header>
+
+<div class="warn-box">
+  <strong>Opening this page in a browser</strong><br>
+  If you are reading this inside a Docker container via JupyterLab, open this file directly in your browser for the best experience. In your browser's address bar, go to:<br><br>
+  <code>http://localhost:8888/files/index.html</code><br><br>
+  Replace <code>8888</code> with whatever port you mapped when starting the container. If you are already viewing this page in a browser tab (not inside JupyterLab), you can ignore this note.
+</div>
+
+<h2 class="sh">Quick Navigation</h2>
+<div class="cta-row">
+  <a class="cta" href="web/search.html">🔍 Notebook Index &amp; Search</a>
+  <a class="cta secondary" href="web/challenges.html">🏆 Challenges</a>
+  <a class="cta secondary" href="web/data.html">📊 Datasets</a>
+  <a class="cta secondary" href="web/how_to.html">📖 How to Use the Container</a>
+</div>
+
+<h2 class="sh">About This Series</h2>
+<p class="prose">project-io is a structured, self-paced introduction to machine learning using Python. It is written for those who are new to programming and builds methodically from Python fundamentals through to advanced evaluation techniques. Every concept is introduced with clear explanations and worked examples before being applied in code.</p>
+<p class="prose">The series is designed so that each notebook builds on the previous one. Notebooks 0–2 establish Python and programming foundations. Notebooks 3–5 introduce the core data science libraries and classical statistical learning. Notebooks 6–8 cover the main families of supervised and unsupervised algorithms. Notebooks 9–12 focus on evaluation, metrics, and practical model assessment. The three bonus notebooks provide additional depth on neural networks, imbalanced learning, and mixture models for those who want to go further.</p>
+<p class="prose">All interactive widgets, visualisations, and datasets are included. No internet connection is required once the container is running. The full source is available at <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a>.</p>
+
+<h2 class="sh">The Notebooks</h2>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 0: A Python Primer for Machine Learning</div>
+  <div class="card-sub">📁 Notebook_0/Notebook_0.ipynb</div>
+  <div class="card-desc">A complete introduction to Python for people with no prior programming experience. Covers variables, types, control flow, functions, scope, and the data structures you will use throughout the rest of the series. Finishes with a signpost to NumPy, pandas, matplotlib, and scikit-learn.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 1: Introduction to Python Programming</div>
+  <div class="card-sub">📁 Notebook_1/Notebook_1.ipynb</div>
+  <div class="card-desc">Introduces JupyterLab and builds core Python skills in the context of a machine learning problem. Covers arithmetic, strings, lists, dictionaries, sets, and tuples before introducing straight lines as the simplest possible decision boundaries and the idea of residual error.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 2: Control Flow, Functions, and Decision Boundaries</div>
+  <div class="card-sub">📁 Notebook_2/Notebook_2.ipynb</div>
+  <div class="card-desc">Deepens Python fluency with comparison and logical operators, conditional statements, loops, list comprehensions, and custom functions. Develops the decision boundary theme by searching for the best threshold, extending to 2-D boundaries, and introducing the concept of a loss landscape.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 3: NumPy, Statistics, and Feature Analysis</div>
+  <div class="card-sub">📁 Notebook_3/Notebook_3.ipynb</div>
+  <div class="card-desc">Introduces NumPy as the numerical foundation of Python machine learning: array creation, indexing, broadcasting, and universal functions. Covers data distributions, correlation, Cohen's d, and feature selection, building from descriptive statistics to a complete classification pipeline.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 4: Pandas, Optimisation, and the Curse of Dimensionality</div>
+  <div class="card-sub">📁 Notebook_4/Notebook_4.ipynb</div>
+  <div class="card-desc">Covers the pandas library in depth — Series, DataFrames, filtering, GroupBy, apply, and file I/O — before connecting tabular data to ML by framing models as parameterised mapping functions. Introduces gradient descent, the loss landscape, and the curse of dimensionality.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 5: Regression and Classification</div>
+  <div class="card-sub">📁 Notebook_5/Notebook_5.ipynb</div>
+  <div class="card-desc">Builds simple and multiple linear regression from first principles using least squares, then transitions to logistic regression via the sigmoid function, log-odds, and maximum likelihood estimation. Introduces the scikit-learn fit/predict pattern and key regression evaluation metrics.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 6: Naïve Bayes, Decision Trees, Random Forests, and SVMs</div>
+  <div class="card-sub">📁 Notebook_6/Notebook_6.ipynb</div>
+  <div class="card-desc">Surveys four classical classifiers side by side. Covers Bayes' theorem and Gaussian Naïve Bayes, information gain and the CART algorithm for decision trees, ensemble methods and bootstrap sampling for random forests, and the maximum-margin hyperplane and kernel trick for SVMs.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge bonus">Bonus</span>Notebook 6 Bonus: Introduction to Neural Networks</div>
+  <div class="card-sub">📁 Notebook_6_Bonus/Notebook_6_Bonus.ipynb</div>
+  <div class="card-desc">An extended bonus notebook tracing artificial neural networks from their biological origins through the McCulloch–Pitts neuron and the perceptron to the multilayer perceptron. Implements XOR from scratch, introduces activation functions and backpropagation, and closes with a look at why deep learning exists.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 7: Visualisation for Machine Learning and Feature Selection</div>
+  <div class="card-sub">📁 Notebook_7/Notebook_7.ipynb</div>
+  <div class="card-desc">A practical guide to data visualisation for ML practitioners using matplotlib and seaborn. Covers histograms, KDE plots, box plots, violin plots, scatter plots, correlation heatmaps, and pairplots, then applies them to feature selection using filter, wrapper, and embedded methods.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge bonus">Bonus</span>Notebook 7 Bonus: Imbalanced Learning</div>
+  <div class="card-sub">📁 Notebook_7_Bonus/Notebook_7_Bonus.ipynb</div>
+  <div class="card-desc">A focused bonus notebook on the class imbalance problem. Explains why accuracy is misleading on skewed data and introduces data-level remedies — random undersampling, oversampling, stratification, SMOTE, and Borderline-SMOTE — alongside algorithm-level approaches including cost-sensitive learning.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 8: Unsupervised Learning and Clustering</div>
+  <div class="card-sub">📁 Notebook_8/Notebook_8.ipynb</div>
+  <div class="card-desc">Introduces unsupervised learning through the lens of similarity and distance metrics, then covers four clustering algorithms: k-nearest neighbours, k-means (from scratch and via scikit-learn), hierarchical clustering with dendrograms, and DBSCAN for density-based discovery.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge bonus">Bonus</span>Notebook 8 Bonus: Mixture Models and the EM Algorithm</div>
+  <div class="card-sub">📁 Notebook_8_Bonus/Notebook_8_Bonus.ipynb</div>
+  <div class="card-desc">A bonus notebook introducing Gaussian mixture models as a probabilistic alternative to k-means. Derives the Expectation–Maximisation algorithm step by step, covers covariance types, model selection via AIC and BIC, and shows how a fitted GMM can serve as a density estimator for anomaly detection.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 9: OPTICS, Dimensionality Reduction, and PCA</div>
+  <div class="card-sub">📁 Notebook_9/Notebook_9.ipynb</div>
+  <div class="card-desc">Extends clustering with OPTICS for varying-density data, then pivots to dimensionality reduction. Builds PCA from first principles — variance, covariance matrices, eigenvectors, eigenvalues — before using scikit-learn's implementation for scree plots, biplots, and downstream classification.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 10: Classifier Evaluation</div>
+  <div class="card-sub">📁 Notebook_10/Notebook_10.ipynb</div>
+  <div class="card-desc">Addresses the subtleties of evaluating classifiers fairly: the memorisation problem, the i.i.d. assumption, and the No Free Lunch theorem. Covers train/test splitting strategies, stratified and weighted sampling, k-fold cross-validation, and the confusion matrix for binary and multi-class problems.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 11: Evaluation Metrics and the Bias–Variance Trade-off</div>
+  <div class="card-sub">📁 Notebook_11/Notebook_11.ipynb</div>
+  <div class="card-desc">Defines and compares the full suite of classification metrics — precision, recall, F1, specificity, G-mean, balanced accuracy, Cohen's kappa, and the Matthews correlation coefficient — and explains when each is appropriate. Connects model complexity to the bias–variance trade-off and introduces regularisation.</div>
+</div>
+<div class="card">
+  <div class="card-title"><span class="badge">Notebook</span>Notebook 12: ROC Curves, Precision–Recall Curves, and Clustering Evaluation</div>
+  <div class="card-sub">📁 Notebook_12/Notebook_12.ipynb</div>
+  <div class="card-desc">Covers threshold-independent evaluation for binary and multi-class classifiers via ROC curves and AUC, contrasts these with precision–recall curves on imbalanced data, and closes with internal clustering evaluation metrics: WCSS, silhouette score, Davies–Bouldin index, and the Dunn index.</div>
+</div>
+
+<h2 class="sh">File Structure</h2>
+<p class="prose">Each notebook lives in its own folder. The structure within each folder follows a consistent pattern:</p>
+<pre>Notebook_N/
+├── Notebook_N.ipynb          ← the main notebook
+├── Challenge_N.ipynb         ← optional exercises (same number as the notebook)
+├── visualisations/
+│   ├── Figure_1.py           ← interactive figure scripts called from the notebook
+│   ├── Figure_2.py
+│   └── ...
+└── data/
+    └── *.csv                 ← datasets used in the notebook</pre>
+<p class="prose">Alongside the notebook folders sit this page (<code>index.html</code>) and the <code>web/</code> folder, which contains the searchable notebook index, challenge reference, datasets reference, and the how-to guide.</p>
+<pre>/ (container root)
+├── index.html
+├── web/
+│   ├── search.html           ← searchable index of all topics across all notebooks
+│   ├── challenges.html       ← reference guide for all challenge notebooks
+│   ├── data.html             ← reference for all datasets used in the series
+│   └── how_to.html           ← guide to using the container
+├── Notebook_0/
+├── Notebook_1/
+├── Notebook_2/
+│   ...and so on</pre>
+
+<h2 class="sh">Python Environment</h2>
+<p class="prose">The container provides a pre-configured Python environment. All libraries are pre-installed and version-pinned so that every notebook runs exactly as written, without any additional setup.</p>
+<table>
+  <thead><tr><th>Library</th><th>Version</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>Python</code></td><td>3.13.2</td><td>Core language</td></tr>
+    <tr><td><code>numpy</code></td><td>2.2.4</td><td>Numerical arrays and mathematics</td></tr>
+    <tr><td><code>pandas</code></td><td>2.2.3</td><td>Tabular data and DataFrames</td></tr>
+    <tr><td><code>matplotlib</code></td><td>3.10.0</td><td>Plotting and visualisation</td></tr>
+    <tr><td><code>seaborn</code></td><td>0.13.2</td><td>Statistical visualisation</td></tr>
+    <tr><td><code>scipy</code></td><td>1.15.2</td><td>Scientific computing</td></tr>
+    <tr><td><code>scikit-learn</code></td><td>1.6.1</td><td>Machine learning algorithms and evaluation</td></tr>
+    <tr><td><code>ipywidgets</code></td><td>8.1.7</td><td>Interactive notebook widgets</td></tr>
+    <tr><td><code>IPython</code></td><td>8.30.0</td><td>Enhanced interactive Python shell</td></tr>
+    <tr><td><code>imbalanced-learn</code></td><td>0.14.1</td><td>Tools for imbalanced classification</td></tr>
+  </tbody>
+</table>
+<p class="prose">The environment is isolated inside the Docker container and does not affect any Python installation on your host machine.</p>
+
+<h2 class="sh">Viewing and Editing Notebooks</h2>
+<p class="prose">There are many tools capable of opening <code>.ipynb</code> notebook files — including VS Code, PyCharm, Google Colab, and others. This series is designed and tested with <strong>JupyterLab</strong>, which is included in the container and runs automatically when the container starts. Using a different tool is possible but not officially supported, and some interactive widgets may not render correctly outside JupyterLab.</p>
+<p class="prose">For instructions on starting the container and connecting to JupyterLab, see the <a href="web/how_to.html">How to Use the Container</a> guide.</p>
+
+<footer class="page-foot">
+  <div class="author-line"><strong>Author:</strong> Dr Rob Lyon &nbsp;&middot;&nbsp; <strong>Version:</strong> 1.0 &nbsp;&middot;&nbsp; <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a></div>
+  <h2>Copyright &amp; License</h2>
+  <p>Copyright &copy; 2026 Robert Lyon. All Rights Reserved.</p>
+  <p>These materials are the intellectual property of the author. Permission is granted solely to read, study, and analyse this material for personal educational purposes. No other rights are granted.</p>
+  <p>Without the prior written consent of the author, you may not:</p>
+  <ul>
+    <li>Copy, reproduce, redistribute, publish, transmit, or display this work in whole or in part.</li>
+    <li>Modify, adapt, transform, translate, or create derivative works based on this material.</li>
+    <li>Incorporate any portion of this work into another project, publication, product, model, dataset, or codebase.</li>
+    <li>Use this material for commercial purposes.</li>
+    <li>Remove or alter this copyright notice.</li>
+  </ul>
+  <p>All intellectual property rights remain exclusively vested in the author. Access to this material does not constitute a transfer of ownership, license, or any other intellectual property rights except as expressly stated above.</p>
+</footer>
+
+</div><!-- .wrap -->
+</body>
+</html>

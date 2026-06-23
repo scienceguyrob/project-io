@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Use the Container — project-io</title>
+
+<style>
+:root {
+  --bg:           #13151a;
+  --bg-raised:    #1a1d24;
+  --bg-card:      #1e2229;
+  --bg-hover:     #252a33;
+  --rule:         #2e333d;
+  --ink:          #eef0f3;
+  --ink-soft:     #b4bac6;
+  --ink-faint:    #7d8491;
+  --accent:       #7eb8ff;
+  --accent-hi:    #a8d0ff;
+  --accent-bg:    #162035;
+  --green:        #4db885;
+  --green-bg:     #0d2318;
+  --orange:       #f5a55a;
+  --orange-bg:    #2a1800;
+  --shadow:       0 1px 3px rgba(0,0,0,.45), 0 4px 18px rgba(0,0,0,.35);
+  --radius:       10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hi); text-decoration: underline; }
+code, pre {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: .88em;
+}
+pre {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: .85rem 1.1rem;
+  overflow-x: auto;
+  color: var(--ink-soft);
+  margin: .75rem 0;
+}
+code {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .1em .38em;
+  color: var(--accent-hi);
+}
+pre code { background: none; border: none; padding: 0; color: inherit; }
+
+/* Layout */
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* Nav bar */
+.site-nav {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--rule);
+  padding: .75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.site-nav .inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.site-nav .brand {
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .03em;
+  color: var(--accent-hi);
+  white-space: nowrap;
+}
+.site-nav a {
+  font-size: .84rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--accent-hi); text-decoration: none; }
+.site-nav a.active { color: var(--accent-hi); font-weight: 700; }
+.nav-sep { flex: 1; }
+
+/* Page header */
+.page-head {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.4rem;
+}
+.eyebrow {
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent-hi);
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+h1.title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -.015em;
+  margin-bottom: .5rem;
+}
+.subtitle {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  max-width: 58ch;
+  line-height: 1.55;
+}
+
+/* Section headings */
+h2.sh {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 2.2rem 0 .9rem;
+  padding-bottom: .45rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+h3.sh3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 .5rem;
+  color: var(--ink-soft);
+}
+
+/* Prose */
+p.prose { margin-bottom: .85rem; color: var(--ink-soft); }
+p.prose:last-child { margin-bottom: 0; }
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow);
+  margin-bottom: .7rem;
+}
+.card:hover { border-color: var(--accent); background: var(--bg-hover); }
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .25rem;
+}
+.card-sub {
+  font-size: .82rem;
+  color: var(--ink-faint);
+  margin-bottom: .4rem;
+}
+.card-desc {
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* Notebook grid */
+.nb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: .7rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .16rem .5rem;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent-hi);
+  margin-right: .4rem;
+}
+.badge.bonus { background: #2a1800; color: var(--orange); }
+
+/* Info box */
+.info-box {
+  background: var(--green-bg);
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  padding: .9rem 1.1rem;
+  margin: 1rem 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.info-box strong { color: var(--green); }
+
+.warn-box {
+  background: var(--orange-bg);
+  border: 1px solid var(--orange);
+  border-radius: var(--radius);
+  padding: .9rem 1.1rem;
+  margin: 1rem 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.warn-box strong { color: var(--orange); }
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+  margin: .75rem 0 1.25rem;
+}
+th {
+  text-align: left;
+  padding: .5rem .75rem;
+  background: var(--bg-raised);
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-bottom: 1px solid var(--rule);
+}
+td {
+  padding: .5rem .75rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+td code { font-size: .82em; }
+
+/* Nav CTAs */
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin: 1.4rem 0;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--accent);
+  color: #0c1118;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .12s;
+}
+.cta:hover { background: var(--accent-hi); color: #0c1118; text-decoration: none; }
+.cta.secondary {
+  background: var(--bg-card);
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+}
+.cta.secondary:hover { background: var(--bg-hover); color: var(--ink); border-color: var(--accent); }
+
+/* Ol/Ul */
+ol.steps, ul.bullets {
+  margin: .5rem 0 .9rem 1.3rem;
+  color: var(--ink-soft);
+  font-size: .93rem;
+  line-height: 1.7;
+}
+ol.steps li, ul.bullets li { margin-bottom: .2rem; }
+
+/* Footer */
+footer.page-foot {
+  margin-top: 3.5rem;
+  padding: 1.8rem 0 2rem;
+  border-top: 1px solid var(--rule);
+  font-size: .8rem;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+footer.page-foot h2 {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+  margin: 0 0 .5rem;
+  font-weight: 700;
+}
+footer.page-foot p { margin-bottom: .5rem; }
+footer.page-foot ul { margin: .2rem 0 .5rem 1.2rem; }
+footer.page-foot li { margin-bottom: .2rem; }
+.author-line { color: var(--ink-soft); margin-bottom: 1rem; }
+.author-line strong { color: var(--ink); }
+
+@media (max-width: 600px) {
+  h1.title { font-size: 1.65rem; }
+  .wrap { padding: 0 1rem; }
+  .nb-grid { grid-template-columns: 1fr; }
+  .page-head { padding: 2rem 0 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+</head>
+<body>
+
+
+<nav class="site-nav">
+  <div class="inner">
+    <span class="brand"><img src="dook.png" alt="project-io logo" style="width:26px;height:26px;border-radius:5px;object-fit:cover;vertical-align:middle;margin-right:.4rem;">project&#8209;io</span>
+    <a href="../index.html">Home</a><a href="search.html">Notebook Index</a><a href="how_to.html" class="active">How to Use</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Setup &amp; Usage Guide</p>
+  <h1 class="title">How to Use the Container</h1>
+  <p class="subtitle">Everything you need to get the notebook environment running, connect to it from your browser, and move files in and out — on macOS or Windows.</p>
+</header>
+
+<div class="info-box">
+  <strong>Note:</strong> This guide covers command-line Docker only. It assumes you have Docker installed. If you do not have Docker yet, visit <a href="https://docs.docker.com/get-docker/" target="_blank">docs.docker.com/get-docker</a> and follow the instructions for your operating system before continuing.
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     1. WHAT IS DOCKER
+══════════════════════════════════════════════════ -->
+<h2 class="sh">1. What is Docker?</h2>
+<p class="prose">Docker is a tool that packages software — along with everything it needs to run — into a self-contained unit called a <strong>container</strong>. Think of it as a lightweight virtual machine that includes a specific version of Python and all the required libraries, pre-installed and pre-configured.</p>
+<p class="prose">The benefit for you is that the environment is identical for everyone, regardless of what operating system or Python version you have on your own machine. You do not need to install Python, pip, or any libraries yourself. Everything is inside the container.</p>
+<p class="prose">Key terms you will see:</p>
+<ul class="bullets">
+  <li><strong>Image</strong> — the blueprint for the container, downloaded once from a registry.</li>
+  <li><strong>Container</strong> — a running instance of an image. You can start and stop it as many times as you like.</li>
+  <li><strong>Volume</strong> — a way of linking a folder on your machine to a folder inside the container, so files can pass between them.</li>
+  <li><strong>Port</strong> — a communication channel. JupyterLab runs on a port inside the container; you map it to a port on your machine so your browser can reach it.</li>
+</ul>
+
+<!-- ══════════════════════════════════════════════════
+     2. PULLING THE IMAGE
+══════════════════════════════════════════════════ -->
+<h2 class="sh">2. Pulling the Image</h2>
+<p class="prose">Before you can run a container you need to download the image. Open a terminal (macOS: Terminal or iTerm; Windows: Command Prompt or PowerShell) and run:</p>
+<pre>docker pull project-io</pre>
+<p class="prose">Replace <code>&lt;image-name&gt;</code> with the image name you have been given. This downloads the image to your machine. You only need to do this once (or again later if an updated version is released).</p>
+
+<!-- ══════════════════════════════════════════════════
+     3. STARTING THE CONTAINER
+══════════════════════════════════════════════════ -->
+<h2 class="sh">3. Starting the Container</h2>
+<p class="prose">The command below starts the container and maps JupyterLab to port 8888 on your machine. Run it from a terminal.</p>
+
+<h3 class="sh3">macOS</h3>
+<pre>docker run -p 8888:8888 project-io</pre>
+
+<h3 class="sh3">Windows (Command Prompt or PowerShell)</h3>
+<pre>docker run -p 8888:8888 project-io</pre>
+
+<p class="prose">The command is the same on both platforms. After a few seconds you will see output from JupyterLab in your terminal. Leave this terminal open — closing it stops the container.</p>
+
+<div class="info-box">
+  <strong>What -p 8888:8888 means:</strong> The first 8888 is the port on your machine; the second is the port inside the container. When you visit <code>http://localhost:8888</code> in your browser, your machine forwards that request to JupyterLab running inside the container.
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     4. CONNECTING TO JUPYTERLAB
+══════════════════════════════════════════════════ -->
+<h2 class="sh">4. Connecting to JupyterLab</h2>
+<p class="prose">Once the container is running, open your browser and go to:</p>
+<pre>http://localhost:8888</pre>
+<p class="prose">JupyterLab will open. No password or token is required. You will see the file browser on the left showing the notebooks and folders described on the <a href="../index.html">Home</a> page.</p>
+<p class="prose">To open a notebook, navigate to its folder in the file browser and double-click the <code>.ipynb</code> file.</p>
+
+<div class="warn-box">
+  <strong>Recommended: open HTML pages directly in the browser.</strong><br>
+  The HTML pages in this series (this guide, the home page, and the notebook search index) are best viewed as standalone browser pages rather than through JupyterLab's file viewer, which applies restrictions that can prevent interactive features from working.<br><br>
+  To open any HTML file directly, use this URL pattern in your browser:<br><br>
+  <code>http://localhost:8888/files/index.html</code><br>
+  <code>http://localhost:8888/files/web/search.html</code><br>
+  <code>http://localhost:8888/files/web/challenges.html</code><br>
+  <code>http://localhost:8888/files/web/data.html</code><br>
+  <code>http://localhost:8888/files/web/how_to.html</code><br><br>
+  Simply type or paste the address into your browser's address bar.
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     5. STOPPING THE CONTAINER
+══════════════════════════════════════════════════ -->
+<h2 class="sh">5. Stopping the Container</h2>
+<p class="prose">To stop the container, go to the terminal where it is running and press <code>Ctrl + C</code>. The container will shut down cleanly.</p>
+<p class="prose">If you started the container in the background (with the <code>-d</code> flag), stop it by name or ID:</p>
+<pre>docker ps                        # lists running containers and their IDs
+docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
+
+<!-- ══════════════════════════════════════════════════
+     6. MOVING FILES IN AND OUT
+══════════════════════════════════════════════════ -->
+<h2 class="sh">6. Moving Files In and Out of the Container</h2>
+<p class="prose">There are two ways to share files between your machine and the container: volume mounts (recommended) and <code>docker cp</code>.</p>
+
+<h3 class="sh3">Option A — Volume Mount (recommended)</h3>
+<p class="prose">A volume mount links a folder on your machine to a folder inside the container. Files in that folder are shared in real time — changes on either side appear immediately on the other. This is the cleanest approach for saving your work.</p>
+<p class="prose">Add the <code>-v</code> flag to your <code>docker run</code> command:</p>
+
+<h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">macOS</h4>
+<pre>docker run -p 8888:8888 -v /Users/yourname/ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+
+<h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (Command Prompt)</h4>
+<pre>docker run -p 8888:8888 -v C:\Users\yourname\ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+
+<h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (PowerShell)</h4>
+<pre>docker run -p 8888:8888 -v C:/Users/yourname/ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+
+<p class="prose">Replace <code>/Users/yourname/ml-work</code> (macOS) or <code>C:\Users\yourname\ml-work</code> (Windows) with the actual path to a folder on your machine. Inside the container, the folder will appear at <code>/home/jovyan/work</code> and will be visible in the JupyterLab file browser under the <code>work</code> directory.</p>
+<p class="prose">Any file you save into that <code>work</code> folder from inside JupyterLab will immediately appear in the folder on your machine, and vice versa.</p>
+
+<div class="warn-box">
+  <strong>Windows note:</strong> Docker on Windows requires that the drive you are sharing (e.g. <code>C:</code>) is enabled for file sharing in Docker's settings. If you get a permission error, check your Docker configuration.
+</div>
+
+<h3 class="sh3">Option B — docker cp</h3>
+<p class="prose">If you need to copy a specific file rather than mounting a whole folder, use <code>docker cp</code>. This works while the container is running.</p>
+
+<p class="prose"><strong>Copy a file from your machine into the container:</strong></p>
+<pre>docker cp /path/to/myfile.csv &lt;container-id&gt;:/home/jovyan/myfile.csv</pre>
+
+<p class="prose"><strong>Copy a file from the container to your machine:</strong></p>
+<pre>docker cp &lt;container-id&gt;:/home/jovyan/myfile.csv /path/to/destination/</pre>
+
+<p class="prose">To find the container ID, run <code>docker ps</code> in a separate terminal while the container is running. The ID is the first column of the output.</p>
+
+<!-- ══════════════════════════════════════════════════
+     7. KEEPING WORK BETWEEN SESSIONS
+══════════════════════════════════════════════════ -->
+<h2 class="sh">7. Keeping Your Work Between Sessions</h2>
+<p class="prose">By default, any changes you make to files inside the container are lost when the container stops. To preserve your work across sessions, use a volume mount (Option A above) and save your notebooks and output files into the mounted folder.</p>
+<p class="prose">Alternatively, use <code>docker cp</code> to copy important files out of the container before stopping it.</p>
+
+<!-- ══════════════════════════════════════════════════
+     8. RUNNING A SPECIFIC NOTEBOOK DIRECTLY
+══════════════════════════════════════════════════ -->
+<h2 class="sh">8. Opening a Notebook Directly</h2>
+<p class="prose">Rather than navigating the file browser every time, you can open a specific notebook directly by typing its path into your browser after the JupyterLab URL. The pattern is:</p>
+<pre>http://localhost:8888/lab/tree/Notebook_3/Notebook_3.ipynb</pre>
+<p class="prose">Adjust the path for whichever notebook you want. You can bookmark these URLs for fast access.</p>
+
+<!-- ══════════════════════════════════════════════════
+     9. QUICK REFERENCE
+══════════════════════════════════════════════════ -->
+<h2 class="sh">9. Quick Reference</h2>
+<table>
+  <thead><tr><th>Task</th><th>Command / URL</th></tr></thead>
+  <tbody>
+    <tr><td>Pull the image</td><td><code>docker pull project-io</code></td></tr>
+    <tr><td>Start the container</td><td><code>docker run -p 8888:8888 project-io</code></td></tr>
+    <tr><td>Start with a volume mount</td><td><code>docker run -p 8888:8888 -v /your/folder:/home/jovyan/work project-io</code></td></tr>
+    <tr><td>Open JupyterLab</td><td><code>http://localhost:8888</code></td></tr>
+    <tr><td>Open the home page</td><td><code>http://localhost:8888/files/index.html</code></td></tr>
+    <tr><td>Open the notebook search index</td><td><code>http://localhost:8888/files/web/search.html</code></td></tr>
+    <tr><td>Open a specific notebook</td><td><code>http://localhost:8888/lab/tree/Notebook_N/Notebook_N.ipynb</code></td></tr>
+    <tr><td>List running containers</td><td><code>docker ps</code></td></tr>
+    <tr><td>Stop the container</td><td><code>Ctrl + C</code> in the terminal, or <code>docker stop &lt;id&gt;</code></td></tr>
+    <tr><td>Copy file into container</td><td><code>docker cp file.csv &lt;id&gt;:/home/jovyan/file.csv</code></td></tr>
+    <tr><td>Copy file out of container</td><td><code>docker cp &lt;id&gt;:/home/jovyan/file.csv ./</code></td></tr>
+  </tbody>
+</table>
+
+
+<footer class="page-foot">
+  <div class="author-line"><strong>Author:</strong> Dr Rob Lyon &nbsp;&middot;&nbsp; <strong>Version:</strong> 1.0 &nbsp;&middot;&nbsp; <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a></div>
+  <h2>Copyright &amp; License</h2>
+  <p>Copyright &copy; 2026 Robert Lyon. All Rights Reserved.</p>
+  <p>These materials are the intellectual property of the author. Permission is granted solely to read, study, and analyse this material for personal educational purposes. No other rights are granted.</p>
+  <p>Without the prior written consent of the author, you may not:</p>
+  <ul>
+    <li>Copy, reproduce, redistribute, publish, transmit, or display this work in whole or in part.</li>
+    <li>Modify, adapt, transform, translate, or create derivative works based on this material.</li>
+    <li>Incorporate any portion of this work into another project, publication, product, model, dataset, or codebase.</li>
+    <li>Use this material for commercial purposes.</li>
+    <li>Remove or alter this copyright notice.</li>
+  </ul>
+  <p>All intellectual property rights remain exclusively vested in the author. Access to this material does not constitute a transfer of ownership, license, or any other intellectual property rights except as expressly stated above.</p>
+</footer>
+
+</div><!-- .wrap -->
+</body>
+</html>

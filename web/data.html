@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datasets — project-io</title>
+<style>
+:root {
+  --bg:#13151a;--bg-raised:#1a1d24;--bg-card:#1e2229;--bg-hover:#252a33;
+  --rule:#2e333d;--ink:#eef0f3;--ink-soft:#b4bac6;--ink-faint:#7d8491;
+  --accent:#7eb8ff;--accent-hi:#a8d0ff;--accent-bg:#162035;
+  --green:#4db885;--green-bg:#0d2318;--orange:#f5a55a;--orange-bg:#2a1800;
+  --teal:#5bcfef;--teal-bg:#12303e;
+  --shadow:0 1px 3px rgba(0,0,0,.45),0 4px 18px rgba(0,0,0,.35);
+  --radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hi);text-decoration:underline}
+code,pre{font-family:'Courier New',Courier,monospace;font-size:.88em}
+pre{background:var(--bg-raised);border:1px solid var(--rule);border-radius:8px;padding:.85rem 1.1rem;overflow-x:auto;color:var(--ink-soft);margin:.75rem 0}
+code{background:var(--bg-raised);border:1px solid var(--rule);border-radius:4px;padding:.1em .38em;color:var(--accent-hi)}
+pre code{background:none;border:none;padding:0;color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.5rem}
+.site-nav{background:var(--bg-raised);border-bottom:1px solid var(--rule);padding:.75rem 0;position:sticky;top:0;z-index:20}
+.site-nav .inner{max-width:860px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.site-nav .brand{display:flex;align-items:center;gap:.55rem;font-weight:700;font-size:.88rem;letter-spacing:.03em;color:var(--accent-hi);white-space:nowrap}
+.site-nav .brand img{width:28px;height:28px;border-radius:6px;object-fit:cover}
+.site-nav a{font-size:.84rem;color:var(--ink-soft);white-space:nowrap}
+.site-nav a:hover{color:var(--accent-hi);text-decoration:none}
+.site-nav a.active{color:var(--accent-hi);font-weight:700}
+.page-head{padding:3rem 0 2rem;border-bottom:1px solid var(--rule);margin-bottom:2.4rem;display:flex;align-items:flex-start;gap:1.8rem}
+.page-head-text{flex:1}
+.page-head-logo img{width:96px;height:96px;border-radius:14px;object-fit:cover;box-shadow:var(--shadow)}
+.eyebrow{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-hi);font-weight:700;margin-bottom:.5rem}
+h1.title{font-size:2.1rem;font-weight:700;line-height:1.18;letter-spacing:-.015em;margin-bottom:.5rem}
+.subtitle{font-size:1rem;color:var(--ink-soft);max-width:58ch;line-height:1.55}
+h2.sh{font-size:1.2rem;font-weight:700;margin:2.2rem 0 .9rem;padding-bottom:.45rem;border-bottom:1px solid var(--rule);color:var(--ink)}
+h3.sh3{font-size:1rem;font-weight:700;margin:1.4rem 0 .5rem;color:var(--ink-soft)}
+p.prose{margin-bottom:.85rem;color:var(--ink-soft)}
+p.prose:last-child{margin-bottom:0}
+.ds-card{background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--radius);padding:1.3rem 1.5rem;box-shadow:var(--shadow);margin-bottom:1rem}
+.ds-card:hover{border-color:var(--accent);background:var(--bg-hover)}
+.ds-name{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:.2rem}
+.ds-meta{font-size:.8rem;color:var(--ink-faint);margin-bottom:.7rem}
+.ds-desc{font-size:.88rem;color:var(--ink-soft);line-height:1.6;margin-bottom:.7rem}
+.ds-desc p{margin-bottom:.5rem}
+.ds-desc p:last-child{margin-bottom:0}
+.var-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.6rem 0 .8rem}
+.var-table th{text-align:left;padding:.35rem .6rem;background:var(--bg-raised);color:var(--ink-soft);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--rule)}
+.var-table td{padding:.35rem .6rem;border-bottom:1px solid var(--rule);color:var(--ink-soft);vertical-align:top}
+.var-table tr:last-child td{border-bottom:none}
+.var-table td code{font-size:.8em}
+.badge-nb{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.16rem .5rem;border-radius:999px;background:var(--accent-bg);color:var(--accent-hi);margin-right:.4rem}
+.badge-builtin{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.16rem .5rem;border-radius:999px;background:var(--teal-bg);color:var(--teal);margin-right:.4rem}
+.note-box{background:var(--orange-bg);border:1px solid var(--orange);border-radius:8px;padding:.75rem 1rem;margin-top:.5rem;font-size:.84rem;color:var(--ink-soft);line-height:1.55}
+.note-box strong{color:var(--orange)}
+footer.page-foot{margin-top:3.5rem;padding:1.8rem 0 2rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--ink-faint);line-height:1.6}
+footer.page-foot h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 .5rem;font-weight:700}
+footer.page-foot p{margin-bottom:.5rem}
+footer.page-foot ul{margin:.2rem 0 .5rem 1.2rem}
+footer.page-foot li{margin-bottom:.2rem}
+.author-line{color:var(--ink-soft);margin-bottom:1rem}
+.author-line strong{color:var(--ink)}
+@media(max-width:600px){h1.title{font-size:1.65rem}.wrap{padding:0 1rem}.page-head{flex-direction:column-reverse;gap:1rem}.page-head-logo img{width:72px;height:72px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+*:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="inner">
+    <span class="brand">
+      <img src="dook.png" alt="project-io logo">
+      project&#8209;io
+    </span>
+    <a href="../index.html">Home</a>
+    <a href="search.html">Notebook Index</a>
+    <a href="challenges.html">Challenges</a>
+    <a href="data.html" class="active">Datasets</a>
+    <a href="how_to.html">How to Use</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="page-head">
+  <div class="page-head-text">
+    <p class="eyebrow">project-io</p>
+    <h1 class="title">Datasets</h1>
+    <p class="subtitle">A reference for every dataset used across the project-io notebook series and challenge files — including file paths, column descriptions, class distributions, and usage notes.</p>
+  </div>
+  <div class="page-head-logo">
+    <img src="dook.png" alt="project-io logo">
+  </div>
+</header>
+
+<!-- ══════════════ NOTEBOOK 4 ══════════════ -->
+<h2 class="sh">Notebook 4</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Notebook 4</span>Universities.csv</div>
+  <div class="ds-meta">📁 Notebook_4/data/Universities.csv &nbsp;·&nbsp; 207 data rows (208 including header) &nbsp;·&nbsp; Real dataset</div>
+  <div class="ds-desc">
+    <p>A real dataset of US university programme completion statistics. Used throughout Notebook 4 as the primary tabular data example for pandas.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Sector</code></td><td>String (categorical)</td><td>The sector of the institution (e.g. <code>"Private for-profit, 2-year"</code>)</td></tr>
+      <tr><td><code>University</code></td><td>String</td><td>Name of the institution</td></tr>
+      <tr><td><code>Year</code></td><td>Integer</td><td>The academic year of the record</td></tr>
+      <tr><td><code>Completions</code></td><td>Integer</td><td>Number of programme completions reported</td></tr>
+      <tr><td><code>Geography</code></td><td>String (categorical)</td><td>US state in which the institution is located</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box"><strong>Note on CSV format:</strong> Values containing commas (e.g. <code>"Private for-profit, 2-year"</code>) are enclosed in speech marks so the CSV reader treats the entire text as a single field rather than splitting at the comma.</div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 6 ══════════════ -->
+<h2 class="sh">Notebook 6</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Notebook 6</span>clouds.csv</div>
+  <div class="ds-meta">📁 Notebook_6/data/clouds.csv &nbsp;·&nbsp; 1,800 rows &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes, 600 per class</div>
+  <div class="ds-desc">
+    <p>Synthetic cloud observations described by four continuous physical measurements. Used in Notebook 6 Section 6 to introduce decision trees. Deliberate overlap between Cumulus and Stratus (both occur at low altitudes with mild temperatures) means the tree must use multiple features to separate them.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Feature</th><th>Units</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>altitude_km</code></td><td>km</td><td>Height of the cloud base above sea level. Cirrus forms at 6–12 km; stratus and cumulus below 3 km.</td></tr>
+      <tr><td><code>vertical_extent_km</code></td><td>km</td><td>Thickness of the cloud layer from base to top.</td></tr>
+      <tr><td><code>temperature_c</code></td><td>°C</td><td>Air temperature at cloud altitude. Drops ~6.5°C per km of altitude.</td></tr>
+      <tr><td><code>optical_thickness</code></td><td>0–10</td><td>How opaque the cloud appears. Thick stratus blocks most sunlight; wispy cirrus is nearly transparent.</td></tr>
+      <tr><td><code>cloud_type</code></td><td>—</td><td>Target label: Cumulus, Stratus, or Cirrus.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Notebook 6</span>clouds_complex.csv</div>
+  <div class="ds-meta">📁 Notebook_6/data/clouds_complex.csv &nbsp;·&nbsp; 6,000 rows &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes, 2,000 per class</div>
+  <div class="ds-desc">
+    <p>A more challenging synthetic cloud dataset with ten features, non-linear relationships, correlated noise, and approximately 5% deliberate label noise. Used in Notebook 6 Section 7.3 to compare a single decision tree against a random forest. This dataset must be generated before any cell that loads it.</p>
+    <p>Sources of difficulty include: wider class distributions so Cumulus and Stratus overlap substantially; non-linear feature relationships that a single decision tree struggles to capture; correlated measurement noise across features; and deliberate mislabelling of ~5% of observations.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Feature</th><th>Units</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>altitude_km</code></td><td>km</td><td>Cloud base height above sea level.</td></tr>
+      <tr><td><code>vertical_extent_km</code></td><td>km</td><td>Cloud layer thickness from base to top.</td></tr>
+      <tr><td><code>temperature_c</code></td><td>°C</td><td>Air temperature at cloud altitude.</td></tr>
+      <tr><td><code>optical_thickness</code></td><td>0–12</td><td>Opacity to incoming sunlight.</td></tr>
+      <tr><td><code>droplet_radius_um</code></td><td>μm</td><td>Effective radius of water droplets or ice crystals. U-shaped relationship with altitude.</td></tr>
+      <tr><td><code>liquid_water_path</code></td><td>g/m²</td><td>Total liquid water mass per vertical column. Non-linear interaction with vertical extent.</td></tr>
+      <tr><td><code>wind_shear</code></td><td>m/s/km</td><td>Change in wind speed across the cloud layer. U-shaped with altitude.</td></tr>
+      <tr><td><code>humidity_pct</code></td><td>%</td><td>Relative humidity at cloud altitude. Stratus ~88%; Cirrus ~35%.</td></tr>
+      <tr><td><code>albedo</code></td><td>0–1</td><td>Fraction of sunlight reflected. Non-linear function of optical thickness and liquid water path.</td></tr>
+      <tr><td><code>pressure_hpa</code></td><td>hPa</td><td>Atmospheric pressure at cloud base. Decreases exponentially with altitude.</td></tr>
+      <tr><td><code>cloud_type</code></td><td>—</td><td>Target label: Cumulus, Stratus, or Cirrus.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Notebook 6</span>credit.csv</div>
+  <div class="ds-meta">📁 Notebook_6/data/credit.csv &nbsp;·&nbsp; 5,000 rows &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; Binary target</div>
+  <div class="ds-desc">
+    <p>Synthetic credit application records. Each row represents a single applicant described by six financial features and a binary risk label. Used in Notebook 6 to demonstrate SVM classification with feature scaling — note that <code>credit_score</code> runs from 300–850 while <code>debt_ratio</code> sits between 0 and 1, which is precisely why scaling is essential before fitting an SVM.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>income</code></td><td>Annual income (£k)</td></tr>
+      <tr><td><code>debt_ratio</code></td><td>Proportion of income committed to existing debt</td></tr>
+      <tr><td><code>credit_score</code></td><td>Credit score (300–850)</td></tr>
+      <tr><td><code>loan_amount</code></td><td>Loan amount requested (£k)</td></tr>
+      <tr><td><code>employment_years</code></td><td>Years in current employment</td></tr>
+      <tr><td><code>missed_payments</code></td><td>Number of missed payments in the past 12 months</td></tr>
+      <tr><td><code>risk</code></td><td>Target label: 0 = Low risk, 1 = High risk</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Challenge 6 datasets -->
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 6a</span>robsat.csv</div>
+  <div class="ds-meta">📁 Notebook_6/data/robsat.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes (60/30/10 split)</div>
+  <div class="ds-desc">
+    <p>Remote sensing data inspired by Sentinel-2 multispectral imagery. Each row is a single pixel observation with spectral reflectance bands and derived indices. The target is land cover type: urban, vegetation, or water. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 6b</span>temp_monitoring.csv</div>
+  <div class="ds-meta">📁 Notebook_6/data/temp_monitoring.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 4 classes (50/25/20/5 split) &nbsp;·&nbsp; Contains missing values</div>
+  <div class="ds-desc">
+    <p>Industrial gas turbine telemetry with seven temperature sensor readings. Includes realistic missing values (~12.5% in <code>tbmt_c</code>, ~8.8% in <code>ics_c</code>, ~3% in <code>brg_c</code>) and spike outliers. Target is operational state: normal, warning, critical, or fault. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 7 ══════════════ -->
+<h2 class="sh">Notebook 7</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-builtin">Built-in</span>Breast Cancer Wisconsin (Diagnostic) Dataset</div>
+  <div class="ds-meta">Loaded via <code>sklearn.datasets.load_breast_cancer()</code> &nbsp;·&nbsp; 569 rows &nbsp;·&nbsp; 30 features &nbsp;·&nbsp; Binary target</div>
+  <div class="ds-desc">
+    <p>Each row represents a tumour biopsy. The 30 numeric features are computed from a digitised image of a needle biopsy sample and are organised into three groups of 10 (mean, standard error, and worst) describing characteristics of cell nuclei.</p>
+    <p>The target variable is binary: <strong>0 = Malignant</strong>, <strong>1 = Benign</strong>. The dataset is class-imbalanced: approximately 63% Benign and 37% Malignant.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Feature group</th><th>Examples</th><th>How computed</th></tr></thead>
+    <tbody>
+      <tr><td><code>mean</code></td><td>mean radius, mean texture</td><td>Mean value across all nuclei in the image</td></tr>
+      <tr><td><code>se</code> (standard error)</td><td>radius error, texture error</td><td>Standard error of the measurement</td></tr>
+      <tr><td><code>worst</code></td><td>worst radius, worst texture</td><td>Mean of the three largest values observed</td></tr>
+    </tbody>
+  </table>
+  <p class="ds-desc">The 30 features span: radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, and fractal dimension — each measured three ways (mean, SE, worst).</p>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 7a</span>spectra.csv</div>
+  <div class="ds-meta">📁 Notebook_7/data/spectra.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 7 classes (28/22/18/12/9/7/4 distribution)</div>
+  <div class="ds-desc">
+    <p>Astrophysical variable star data inspired by OGLE and Gaia surveys. Contains pulsation statistics and photometric measurements. Key challenge: <code>period_min</code> and <code>luminosity_lsun</code> each span ~4–5 orders of magnitude, making feature scaling critical. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 7b</span>security.csv</div>
+  <div class="ds-meta">📁 Notebook_7/data/security.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 4 classes (35/24/26/15 split)</div>
+  <div class="ds-desc">
+    <p>Network intrusion detection data inspired by the NSL-KDD benchmark. Labelled network connection records with 15 features (10 base statistics + 5 noisy derived scores). Target: normal, DoS, probe, or R2L traffic. The R2L class deliberately mimics normal traffic. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 8 ══════════════ -->
+<h2 class="sh">Notebook 8</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 8a</span>galaxies.csv &amp; unknown_galaxies.csv</div>
+  <div class="ds-meta">📁 Notebook_8/data/galaxies.csv (10,000 rows, labelled) &nbsp;·&nbsp; Notebook_8/data/unknown_galaxies.csv (2,000 rows, unlabelled)</div>
+  <div class="ds-desc">
+    <p>Extragalactic astrophysics data inspired by SDSS and GAMA galaxy surveys. Both files share the same 8 features. <code>galaxies.csv</code> has labels; <code>unknown_galaxies.csv</code> does not. Three galaxy types: star-forming, quiescent, and starburst (45/35/20 split). See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 9 ══════════════ -->
+<h2 class="sh">Notebook 9</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-builtin">Built-in</span>Iris Dataset</div>
+  <div class="ds-meta">Loaded via <code>sklearn.datasets.load_iris()</code> &nbsp;·&nbsp; 150 rows &nbsp;·&nbsp; 4 features &nbsp;·&nbsp; 3 classes, 50 per class</div>
+  <div class="ds-desc">
+    <p>The classic Iris flower dataset. Used in Notebook 9 to demonstrate PCA: <code>iris.data</code> is a 150×4 matrix where each row is one flower and each column is one of four measurements. After standardising, <code>PCA(n_components=2)</code> reduces to 2 principal components.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>Column</th><th>Feature</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td><code>sepal length (cm)</code></td><td>Length of the sepal (the leaf-like part beneath the petals)</td></tr>
+      <tr><td>1</td><td><code>sepal width (cm)</code></td><td>Width of the sepal</td></tr>
+      <tr><td>2</td><td><code>petal length (cm)</code></td><td>Length of the petal</td></tr>
+      <tr><td>3</td><td><code>petal width (cm)</code></td><td>Width of the petal</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 9</span>radio.csv</div>
+  <div class="ds-meta">📁 Notebook_9/data/radio.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; Binary target (90% non-pulsar / 10% pulsar) &nbsp;·&nbsp; 20 features</div>
+  <div class="ds-desc">
+    <p>Radio astronomy pulsar candidate classification data directly inspired by the HTRU-2 survey dataset (Lyon et al. 2016). Contains 8 original HTRU-2 features plus 12 correlated noisy extensions simulating a modern survey pipeline. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 10 ══════════════ -->
+<h2 class="sh">Notebook 10</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 10</span>satellite.csv</div>
+  <div class="ds-meta">📁 Notebook_10/data/satellite.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 4 classes (59/18/14/9 split)</div>
+  <div class="ds-desc">
+    <p>Earth-observation satellite telemetry inspired by ESA Sentinel operations. Each row is a one-minute snapshot with 10 sensor readings. Target is operational state: nominal, thermal anomaly, power anomaly, or attitude anomaly. The imbalanced class distribution makes this a good test case for SMOTE and MCC-based evaluation. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 11 ══════════════ -->
+<h2 class="sh">Notebook 11</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 11</span>sol.csv</div>
+  <div class="ds-meta">📁 Notebook_11/data/sol.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes (44/36/20 split) &nbsp;·&nbsp; 12 features</div>
+  <div class="ds-desc">
+    <p>Space weather classification data inspired by NASA SDO and NOAA GOES solar monitoring. Contains 6 informative spectroscopic and magnetic features plus 6 noisy derived spectral ratios. Target is solar activity class: quiet, active, or eruptive. Designed to demonstrate SVM overfitting and regularisation via C and gamma sweeps. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 12 ══════════════ -->
+<h2 class="sh">Notebook 12</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 12</span>market.csv</div>
+  <div class="ds-meta">📁 Notebook_12/data/market.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes (29/38/33 split) &nbsp;·&nbsp; 12 features</div>
+  <div class="ds-desc">
+    <p>Stock market technical indicator data. Each row represents one trading day's end-of-day measurements. Target is next-day price movement direction: down (&gt;0.5% fall), flat (within ±0.5%), or up (&gt;0.5% rise). Used to compare SVM, Random Forest, and MLP in a rigorous no-leakage pipeline. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ CHALLENGE-ONLY FILES ══════════════ -->
+<h2 class="sh">Challenge-Only Datasets (Notebook 5)</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 5</span>particles.csv</div>
+  <div class="ds-meta">📁 Notebook_5/data/particles.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; 3 classes (20/50/30 split) &nbsp;·&nbsp; 9 features</div>
+  <div class="ds-desc">
+    <p>Particle physics classification data inspired by CERN detector signatures. Each sample is a particle candidate with tracker and calorimeter measurements. Target: electron (0), muon (1), or pion (2). The electron/pion boundary is the hardest to draw. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-nb">Challenge 5a</span>sea_state.csv</div>
+  <div class="ds-meta">📁 Notebook_5/data/sea_state.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; Binary target &nbsp;·&nbsp; 6 features</div>
+  <div class="ds-desc">
+    <p>Operational oceanography buoy measurements. Binary classification of sea state as calm (0) or storm (1). The <code>sst_anomaly_c</code> feature contributes little predictive signal, which students should identify from KDE plots before fitting. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<footer class="page-foot">
+  <div class="author-line"><strong>Author:</strong> Dr Rob Lyon &nbsp;&middot;&nbsp; <strong>Version:</strong> 1.0 &nbsp;&middot;&nbsp; <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a></div>
+  <h2>Copyright &amp; License</h2>
+  <p>Copyright &copy; 2026 Robert Lyon. All Rights Reserved.</p>
+  <p>These materials are the intellectual property of the author. Permission is granted solely to read, study, and analyse this material for personal educational purposes. No other rights are granted.</p>
+  <p>Without the prior written consent of the author, you may not:</p>
+  <ul>
+    <li>Copy, reproduce, redistribute, publish, transmit, or display this work in whole or in part.</li>
+    <li>Modify, adapt, transform, translate, or create derivative works based on this material.</li>
+    <li>Incorporate any portion of this work into another project, publication, product, model, dataset, or codebase.</li>
+    <li>Use this material for commercial purposes.</li>
+    <li>Remove or alter this copyright notice.</li>
+  </ul>
+  <p>All intellectual property rights remain exclusively vested in the author.</p>
+</footer>
+</div>
+</body>
+</html>

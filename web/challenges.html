@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenges — project-io</title>
+<style>
+:root {
+  --bg:#13151a;--bg-raised:#1a1d24;--bg-card:#1e2229;--bg-hover:#252a33;
+  --rule:#2e333d;--ink:#eef0f3;--ink-soft:#b4bac6;--ink-faint:#7d8491;
+  --accent:#7eb8ff;--accent-hi:#a8d0ff;--accent-bg:#162035;
+  --green:#4db885;--green-bg:#0d2318;--orange:#f5a55a;--orange-bg:#2a1800;
+  --purple:#c4b0ff;--purple-bg:#3d2f6a;
+  --shadow:0 1px 3px rgba(0,0,0,.45),0 4px 18px rgba(0,0,0,.35);
+  --radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hi);text-decoration:underline}
+code,pre{font-family:'Courier New',Courier,monospace;font-size:.88em}
+pre{background:var(--bg-raised);border:1px solid var(--rule);border-radius:8px;padding:.85rem 1.1rem;overflow-x:auto;color:var(--ink-soft);margin:.75rem 0}
+code{background:var(--bg-raised);border:1px solid var(--rule);border-radius:4px;padding:.1em .38em;color:var(--accent-hi)}
+pre code{background:none;border:none;padding:0;color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.5rem}
+.site-nav{background:var(--bg-raised);border-bottom:1px solid var(--rule);padding:.75rem 0;position:sticky;top:0;z-index:20}
+.site-nav .inner{max-width:860px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.site-nav .brand{display:flex;align-items:center;gap:.55rem;font-weight:700;font-size:.88rem;letter-spacing:.03em;color:var(--accent-hi);white-space:nowrap}
+.site-nav .brand img{width:28px;height:28px;border-radius:6px;object-fit:cover}
+.site-nav a{font-size:.84rem;color:var(--ink-soft);white-space:nowrap}
+.site-nav a:hover{color:var(--accent-hi);text-decoration:none}
+.site-nav a.active{color:var(--accent-hi);font-weight:700}
+.page-head{padding:3rem 0 2rem;border-bottom:1px solid var(--rule);margin-bottom:2.4rem;display:flex;align-items:flex-start;gap:1.8rem}
+.page-head-text{flex:1}
+.page-head-logo img{width:96px;height:96px;border-radius:14px;object-fit:cover;box-shadow:var(--shadow)}
+.eyebrow{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-hi);font-weight:700;margin-bottom:.5rem}
+h1.title{font-size:2.1rem;font-weight:700;line-height:1.18;letter-spacing:-.015em;margin-bottom:.5rem}
+.subtitle{font-size:1rem;color:var(--ink-soft);max-width:58ch;line-height:1.55}
+h2.sh{font-size:1.2rem;font-weight:700;margin:2.2rem 0 .9rem;padding-bottom:.45rem;border-bottom:1px solid var(--rule);color:var(--ink)}
+h3.sh3{font-size:1rem;font-weight:700;margin:1.4rem 0 .5rem;color:var(--ink-soft)}
+p.prose{margin-bottom:.85rem;color:var(--ink-soft)}
+p.prose:last-child{margin-bottom:0}
+.challenge-card{background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--radius);padding:1.3rem 1.5rem;box-shadow:var(--shadow);margin-bottom:1rem}
+.challenge-card:hover{border-color:var(--accent);background:var(--bg-hover)}
+.challenge-header{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.7rem}
+.challenge-num{font-size:1.45rem;font-weight:700;color:var(--accent-hi);line-height:1;white-space:nowrap;min-width:2.5rem}
+.challenge-title-block{flex:1}
+.challenge-title{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:.15rem}
+.challenge-file{font-size:.8rem;color:var(--ink-faint)}
+.challenge-body{font-size:.88rem;color:var(--ink-soft);line-height:1.6}
+.challenge-body p{margin-bottom:.6rem}
+.challenge-body p:last-child{margin-bottom:0}
+.var-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.6rem 0 .8rem}
+.var-table th{text-align:left;padding:.35rem .6rem;background:var(--bg-raised);color:var(--ink-soft);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--rule)}
+.var-table td{padding:.35rem .6rem;border-bottom:1px solid var(--rule);color:var(--ink-soft);vertical-align:top}
+.var-table tr:last-child td{border-bottom:none}
+.var-table td code{font-size:.8em}
+.goal-box{background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:.75rem 1rem;margin-top:.7rem;font-size:.84rem;color:var(--ink-soft);line-height:1.55}
+.goal-box strong{color:var(--green)}
+.badge-ch{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.16rem .5rem;border-radius:999px;background:var(--purple-bg);color:var(--purple);margin-right:.4rem}
+footer.page-foot{margin-top:3.5rem;padding:1.8rem 0 2rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--ink-faint);line-height:1.6}
+footer.page-foot h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 .5rem;font-weight:700}
+footer.page-foot p{margin-bottom:.5rem}
+footer.page-foot ul{margin:.2rem 0 .5rem 1.2rem}
+footer.page-foot li{margin-bottom:.2rem}
+.author-line{color:var(--ink-soft);margin-bottom:1rem}
+.author-line strong{color:var(--ink)}
+@media(max-width:600px){h1.title{font-size:1.65rem}.wrap{padding:0 1rem}.page-head{flex-direction:column-reverse;gap:1rem}.page-head-logo img{width:72px;height:72px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+*:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="inner">
+    <span class="brand">
+      <img src="dook.png" alt="project-io logo">
+      project&#8209;io
+    </span>
+    <a href="../index.html">Home</a>
+    <a href="search.html">Notebook Index</a>
+    <a href="challenges.html" class="active">Challenges</a>
+    <a href="data.html">Datasets</a>
+    <a href="how_to.html">How to Use</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="page-head">
+  <div class="page-head-text">
+    <p class="eyebrow">project-io</p>
+    <h1 class="title">Challenges</h1>
+    <p class="subtitle">A set of applied machine learning challenges designed to guide newcomers through real techniques while providing genuinely tricky problems to solve. Each challenge accompanies a main notebook and uses a realistic dataset from science, engineering, or finance.</p>
+  </div>
+  <div class="page-head-logo">
+    <img src="dook.png" alt="project-io logo">
+  </div>
+</header>
+
+<!-- ── Challenge 5 ── -->
+<h2 class="sh">Notebook 5 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">5</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Particle Classification from Detector Signatures</div>
+      <div class="challenge-file">📁 Notebook_5/Challenge_5.ipynb &nbsp;·&nbsp; data: Notebook_5/data/particles.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A particle physics classification problem inspired by detectors at CERN. Each sample represents a particle candidate reconstructed from tracker and calorimeter measurements. The task is to classify particles as <strong>electron</strong>, <strong>muon</strong>, or <strong>pion</strong> (20/50/30 split) using eight spectral and kinematic features.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>momentum_gev</code></td><td>Reconstructed track momentum [GeV/c]</td></tr>
+        <tr><td><code>track_chi2</code></td><td>Track fit chi-squared per degree of freedom</td></tr>
+        <tr><td><code>ecal_energy</code></td><td>Electromagnetic calorimeter energy deposit [GeV]</td></tr>
+        <tr><td><code>hcal_energy</code></td><td>Hadronic calorimeter energy deposit [GeV]</td></tr>
+        <tr><td><code>ecal_hcal_ratio</code></td><td>ECAL / (ECAL + HCAL) energy ratio (derived, correlated with both calorimeter features)</td></tr>
+        <tr><td><code>dE_dx</code></td><td>Ionisation energy loss per unit length [MeV/cm] (Bethe-Bloch correlated with momentum)</td></tr>
+        <tr><td><code>isolation_score</code></td><td>Calorimeter cone isolation score</td></tr>
+        <tr><td><code>n_hits</code></td><td>Number of tracker hits along the track</td></tr>
+        <tr><td><code>particle_type</code></td><td>Target label (0=electron, 1=muon, 2=pion)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply multinomial logistic regression, understand why feature scaling is required before gradient-based solvers, and interpret the learned coefficient matrix in the context of detector physics. The electron/pion boundary is the hardest to draw.</div>
+  </div>
+</div>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">5a</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Sea State Classification from Buoy Observations</div>
+      <div class="challenge-file">📁 Notebook_5/Challenge_5a.ipynb &nbsp;·&nbsp; data: Notebook_5/data/sea_state.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>An entry-level binary classification problem from operational oceanography. Each sample represents a snapshot from a moored ocean buoy. The task is to classify conditions as <strong>calm</strong> or <strong>storm</strong> using five meteorological measurements.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>wind_speed_ms</code></td><td>10-metre wind speed [m/s]</td></tr>
+        <tr><td><code>wave_period_s</code></td><td>Dominant wave period [seconds]</td></tr>
+        <tr><td><code>swell_height_m</code></td><td>Significant swell height [metres]</td></tr>
+        <tr><td><code>sst_anomaly_c</code></td><td>Sea surface temperature anomaly [°C] (weak predictor)</td></tr>
+        <tr><td><code>pressure_hpa</code></td><td>Mean sea level atmospheric pressure [hPa] (negatively correlated with wind and wave features)</td></tr>
+        <tr><td><code>sea_state</code></td><td>Target label (0=calm, 1=storm)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply binary logistic regression, understand why scaling is required, interpret the learned coefficients physically (wind and wave features positive; pressure negative), and recognise that <code>sst_anomaly_c</code> contributes little signal — which students should predict from the KDE plots before fitting and confirm from the coefficient magnitude.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 6 ── -->
+<h2 class="sh">Notebook 6 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">6a</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Land Cover Classification from Satellite Imagery</div>
+      <div class="challenge-file">📁 Notebook_6/Challenge_6a.ipynb &nbsp;·&nbsp; data: Notebook_6/data/robsat.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A remote sensing classification problem inspired by Sentinel-2 multispectral imagery. Each sample represents a single pixel observation described by spectral reflectance bands and derived indices. The task is to classify pixels as <strong>urban</strong>, <strong>vegetation</strong>, or <strong>water</strong> (60/30/10 split) using eight features.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>blue_ref</code></td><td>Blue band reflectance (~490 nm)</td></tr>
+        <tr><td><code>red_ref</code></td><td>Red band reflectance (~665 nm)</td></tr>
+        <tr><td><code>nir_ref</code></td><td>Near-infrared reflectance (~842 nm)</td></tr>
+        <tr><td><code>swir_ref</code></td><td>Short-wave infrared reflectance (~1610 nm)</td></tr>
+        <tr><td><code>ndvi</code></td><td>Normalised Difference Vegetation Index (derived from NIR and red)</td></tr>
+        <tr><td><code>ndwi</code></td><td>Normalised Difference Water Index (derived; anti-correlated with NDVI at ~−0.96)</td></tr>
+        <tr><td><code>texture_var</code></td><td>Local variance of NIR in a 3×3 pixel window</td></tr>
+        <tr><td><code>thermal_bt</code></td><td>Thermal infrared brightness temperature [K]</td></tr>
+        <tr><td><code>land_cover</code></td><td>Target label (0=urban, 1=vegetation, 2=water)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply a decision tree classifier, use the elbow method and silhouette scores to diagnose the right tree depth, visualise the fitted tree, and interpret feature importances. The unconstrained tree achieves 100% training accuracy and 91% test accuracy; optimal depth=3 achieves 95.8% — making the bias-variance tradeoff visible and measurable.</div>
+  </div>
+</div>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">6b</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Gas Turbine Operational State Classification</div>
+      <div class="challenge-file">📁 Notebook_6/Challenge_6b.ipynb &nbsp;·&nbsp; data: Notebook_6/data/temp_monitoring.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A safety-critical classification problem set in an industrial gas turbine monitoring context. Each sample is a telemetry snapshot from a heavy-duty power generation turbine. The task is to classify the operational state as <strong>normal</strong>, <strong>warning</strong>, <strong>critical</strong>, or <strong>fault</strong> (50/25/20/5 split) using seven temperature sensor readings. The dataset contains realistic missing values and spike outliers.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>egt_c</code></td><td>Exhaust gas temperature [°C] (most reliable sensor, rarely missing)</td></tr>
+        <tr><td><code>cit_c</code></td><td>Compressor inlet temperature [°C]</td></tr>
+        <tr><td><code>tbmt_c</code></td><td>Turbine blade metal temperature [°C] (~12.5% missing — optical pyrometer signal loss)</td></tr>
+        <tr><td><code>brg_c</code></td><td>Bearing temperature [°C] (~3% missing — vibration-induced dropout)</td></tr>
+        <tr><td><code>ics_c</code></td><td>Inter-stage cooling supply temperature [°C] (~8.8% missing, conditional on <code>tbmt_c</code>)</td></tr>
+        <tr><td><code>lube_c</code></td><td>Lube oil temperature [°C] (correlated with <code>brg_c</code>)</td></tr>
+        <tr><td><code>amb_c</code></td><td>Ambient temperature [°C]</td></tr>
+        <tr><td><code>op_state</code></td><td>Target label (0=normal, 1=warning, 2=critical, 3=fault)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply Gaussian Naive Bayes after handling missing values and outliers without data leakage. Students must cap outliers using IQR bounds fitted on training data, then apply median imputation using <code>SimpleImputer</code>. The fault class has a bimodal distribution (mechanical runaway vs sensor failure) that a single Gaussian cannot represent — this produces high variance in the fitted fault parameters and explains the lower fault recall.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 7 ── -->
+<h2 class="sh">Notebook 7 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">7a</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Variable Star Classification from Light Curve Spectra</div>
+      <div class="challenge-file">📁 Notebook_7/Challenge_7a.ipynb &nbsp;·&nbsp; data: Notebook_7/data/spectra.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>An astrophysical classification problem inspired by large photometric surveys such as OGLE and Gaia. Each sample represents a variable star candidate described by pulsation statistics and photometric measurements. The task is to classify stars into seven types (Delta Scuti, RR Lyrae, Cepheid, Mira, W Virginis, Beta Cephei, SX Phoenicis) with a 28/22/18/12/9/7/4 distribution.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>period_min</code></td><td>Dominant pulsation period [minutes] (spans ~4 orders of magnitude)</td></tr>
+        <tr><td><code>amplitude_mag</code></td><td>Peak-to-peak V-band amplitude [magnitudes]</td></tr>
+        <tr><td><code>bp_rp</code></td><td>Gaia BP-RP colour index [mag] (effective temperature proxy)</td></tr>
+        <tr><td><code>phi21</code></td><td>Fourier phase parameter φ₂₁ from light curve decomposition [radians]</td></tr>
+        <tr><td><code>r21</code></td><td>Fourier amplitude ratio R₂₁ = A₂/A₁</td></tr>
+        <tr><td><code>fe_h_proxy</code></td><td>Iron abundance [Fe/H] proxy [dex] (primary Population I / II discriminator)</td></tr>
+        <tr><td><code>skewness</code></td><td>Phased light curve skewness</td></tr>
+        <tr><td><code>luminosity_lsun</code></td><td>Luminosity in solar units (spans ~5 orders of magnitude)</td></tr>
+        <tr><td><code>n_modes</code></td><td>log₁₀ of number of detected pulsation frequencies</td></tr>
+        <tr><td><code>star_type</code></td><td>Target label (0–6)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply an RBF SVM and demonstrate the catastrophic effect of not scaling features. <code>period_min</code> and <code>luminosity_lsun</code> span orders of magnitude, causing the unscaled SVM to achieve only 23–56% accuracy while the scaled SVM reaches 79–83% — a ~34 percentage point gain from scaling alone.</div>
+  </div>
+</div>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">7b</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Network Intrusion Detection with Random Forests</div>
+      <div class="challenge-file">📁 Notebook_7/Challenge_7b.ipynb &nbsp;·&nbsp; data: Notebook_7/data/security.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A cybersecurity classification problem inspired by the NSL-KDD network intrusion benchmark. Each sample represents a labelled network connection record. The task is to classify traffic as <strong>normal</strong>, <strong>DoS</strong>, <strong>probe</strong>, or <strong>R2L</strong> (35/24/26/15 split) using 15 features including 10 base network statistics and 5 noisy derived scores.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>duration_s</code></td><td>Connection duration [seconds]</td></tr>
+        <tr><td><code>packet_rate</code></td><td>Packets per second</td></tr>
+        <tr><td><code>byte_rate</code></td><td>Bytes per second (correlated with <code>packet_rate</code>)</td></tr>
+        <tr><td><code>syn_flag_rate</code></td><td>Fraction of SYN-flagged packets</td></tr>
+        <tr><td><code>error_rate</code></td><td>Fraction of RST/error packets</td></tr>
+        <tr><td><code>failed_logins</code></td><td>Failed authentication attempts (primary R2L discriminator)</td></tr>
+        <tr><td><code>payload_entropy</code></td><td>Shannon entropy of payload bytes [bits]</td></tr>
+        <tr><td><code>traffic_type</code></td><td>Target label (0=normal, 1=dos, 2=probe, 3=r2l)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Apply <code>RandomForestClassifier</code> and use <code>GridSearchCV</code> with stratified cross-validation to tune <code>n_estimators</code>, <code>max_depth</code>, <code>max_features</code>, and <code>min_samples_leaf</code>, scoring on <code>f1_macro</code>. The R2L class deliberately mimics normal traffic; a weak default configuration achieves only 41% R2L recall, which a tuned model improves to 70%.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 8 ── -->
+<h2 class="sh">Notebook 8 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">8a</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Galaxy Clustering and Semi-Supervised Classification</div>
+      <div class="challenge-file">📁 Notebook_8/Challenge_8a.ipynb &nbsp;·&nbsp; data: Notebook_8/data/galaxies.csv &amp; unknown_galaxies.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>An extragalactic astrophysics challenge inspired by SDSS and GAMA galaxy surveys. The labelled dataset contains 10,000 galaxy observations; the unlabelled dataset contains 2,000 galaxies with no class column. The three galaxy types are <strong>star-forming</strong>, <strong>quiescent</strong>, and <strong>starburst</strong> (45/35/20 split).</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>log_sfr</code></td><td>log₁₀ star formation rate [M☉/yr] (primary discriminator)</td></tr>
+        <tr><td><code>log_stellar_mass</code></td><td>log₁₀ stellar mass [M☉]</td></tr>
+        <tr><td><code>u_r_colour</code></td><td>Rest-frame (u−r) colour index [magnitudes]</td></tr>
+        <tr><td><code>dn4000</code></td><td>4000 Å break strength (correlated with <code>u_r_colour</code> at ~0.93)</td></tr>
+        <tr><td><code>h_alpha_ew</code></td><td>Hα equivalent width [Å] (strong in starburst)</td></tr>
+        <tr><td><code>velocity_dispersion</code></td><td>Stellar velocity dispersion [km/s]</td></tr>
+        <tr><td><code>galaxy_type</code></td><td>Target label in galaxies.csv only (0=star_forming, 1=quiescent, 2=starburst)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> A three-part challenge: (1) apply K-Means clustering with elbow method and silhouette scores, evaluate with Adjusted Rand Index; (2) use 50 labels per class as seeds with KNN to classify the 2,000 unlabelled galaxies; (3) fit a Gaussian Mixture Model and compare to K-Means — <code>diag</code> covariance GMM achieves the best cluster recovery (ARI=0.913) while <code>full</code> covariance overfits despite lower BIC.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 9 ── -->
+<h2 class="sh">Notebook 9 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">9</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Dimensionality Reduction and MLP: Pulsar Candidate Classification</div>
+      <div class="challenge-file">📁 Notebook_9/Challenge_9.ipynb &nbsp;·&nbsp; data: Notebook_9/data/radio.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A radio astronomy classification problem directly inspired by the HTRU-2 pulsar survey dataset (Lyon et al. 2016). Each sample represents a pulsar candidate described by statistics of its folded pulse profile and DM-SNR curve. The task is binary: <strong>non-pulsar</strong> (90%) or <strong>pulsar</strong> (10%). The dataset has 20 features: the 8 original HTRU-2 features plus 12 correlated noisy extensions simulating a modern survey pipeline.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>prof_mean</code>, <code>prof_std</code>, <code>prof_skewness</code>, <code>prof_kurtosis</code></td><td>Statistics of the integrated folded pulse profile</td></tr>
+        <tr><td><code>dm_snr_mean</code>, <code>dm_snr_std</code>, <code>dm_snr_skewness</code>, <code>dm_snr_kurtosis</code></td><td>Statistics of the DM-SNR curve</td></tr>
+        <tr><td><code>subband_01</code>–<code>subband_08</code></td><td>Sub-band profile and DM statistics (noisy correlated copies)</td></tr>
+        <tr><td><code>pipeline_01</code>–<code>pipeline_04</code></td><td>Higher-order pipeline diagnostic scores</td></tr>
+        <tr><td><code>candidate_type</code></td><td>Target label (0=non_pulsar, 1=pulsar)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Walk through a complete PCA pipeline: diagnose the correlation structure, apply <code>StandardScaler</code>, produce a scree plot and cumulative explained variance curve, visualise the data in 2D PCA space, inspect component loadings, then train an MLP on PCA-reduced features and compare to the full 20-feature baseline. The key finding is that 2 PCA components explain 28% of variance but produce 98.0% MLP accuracy — nearly matching the 98.2% from all 20 features.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 10 ── -->
+<h2 class="sh">Notebook 10 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">10</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>K-NN and SMOTE: Satellite Telemetry Anomaly Detection</div>
+      <div class="challenge-file">📁 Notebook_10/Challenge_10.ipynb &nbsp;·&nbsp; data: Notebook_10/data/satellite.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A safety-critical anomaly detection problem set in an Earth-observation satellite ground control context (inspired by ESA Sentinel operations). Each sample is a one-minute telemetry snapshot. The task is to classify the satellite's operational state as <strong>nominal</strong>, <strong>thermal anomaly</strong>, <strong>power anomaly</strong>, or <strong>attitude anomaly</strong> (59/18/14/9 split).</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>battery_voltage_v</code></td><td>Battery terminal voltage [V]</td></tr>
+        <tr><td><code>solar_panel_current_a</code></td><td>Solar array output current [A] (drops to ~0 in eclipse)</td></tr>
+        <tr><td><code>cpu_temp_c</code></td><td>Onboard processor temperature [°C]</td></tr>
+        <tr><td><code>reaction_wheel_rpm</code></td><td>Reaction wheel spin rate [rpm] (elevated in attitude anomaly)</td></tr>
+        <tr><td><code>attitude_error_roll_deg</code></td><td>Roll pointing error [degrees]</td></tr>
+        <tr><td><code>attitude_error_pitch_deg</code></td><td>Pitch pointing error [degrees]</td></tr>
+        <tr><td><code>attitude_error_yaw_deg</code></td><td>Yaw pointing error [degrees]</td></tr>
+        <tr><td><code>link_quality_db</code></td><td>Downlink signal quality [dBm relative]</td></tr>
+        <tr><td><code>power_consumption_w</code></td><td>Total satellite power consumption [W]</td></tr>
+        <tr><td><code>eclipse_flag</code></td><td>Binary: 1 = satellite in Earth's shadow</td></tr>
+        <tr><td><code>operational_state</code></td><td>Target label (0=nominal, 1=thermal_anomaly, 2=power_anomaly, 3=attitude_anomaly)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> A three-part challenge demonstrating the full imbalanced learning workflow. (1) Establish a baseline <code>KNeighborsClassifier</code> and show that attitude anomaly recall is only 64.6%. (2) Apply SMOTE to the scaled training set only, showing a +17 percentage point jump in attitude recall. (3) Run <code>GridSearchCV</code> with <code>f1_macro</code> scoring to tune k, distance weighting, and metric. Also introduces Matthews Correlation Coefficient (MCC) as a more informative single-number metric than accuracy for imbalanced problems.</div>
+  </div>
+</div>
+
+<!-- ── Challenge 11 ── -->
+<h2 class="sh">Notebook 11 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">11</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>SVM Overfitting and Regularisation: Solar Flare Classification</div>
+      <div class="challenge-file">📁 Notebook_11/Challenge_11.ipynb &nbsp;·&nbsp; data: Notebook_11/data/sol.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A space weather classification problem inspired by NASA SDO and NOAA GOES solar monitoring data. Each sample represents a snapshot of solar observatory measurements. The task is to classify solar activity as <strong>quiet</strong>, <strong>active</strong>, or <strong>eruptive</strong> (44/36/20 split) using 12 features: six informative spectroscopic and magnetic measurements plus six noisy derived spectral ratio features.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>log_xray_flux</code></td><td>log₁₀ GOES 1–8 Å X-ray flux [W/m²] (primary flare discriminator)</td></tr>
+        <tr><td><code>halpha_intensity</code></td><td>Relative H-alpha chromospheric emission</td></tr>
+        <tr><td><code>magnetic_bmax</code></td><td>Peak active region magnetic field [Gauss]</td></tr>
+        <tr><td><code>sunspot_area</code></td><td>Sunspot group area [millionths of solar disk]</td></tr>
+        <tr><td><code>prominence_height</code></td><td>Tallest prominence height above limb [Mm]</td></tr>
+        <tr><td><code>radio_burst_sfu</code></td><td>Type II/III radio burst flux density [SFU]</td></tr>
+        <tr><td><code>spectral_ratio_1</code>–<code>spectral_ratio_3</code></td><td>Spectral line ratios (noisy; <code>spectral_ratio_3</code> is near-pure noise)</td></tr>
+        <tr><td><code>activity_class</code></td><td>Target label (0=quiet, 1=active, 2=eruptive)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> Demonstrate and diagnose SVM overfitting through systematic C and gamma sweeps. The key finding: at gamma=10 the SVM achieves 100% training accuracy but only 44% test accuracy, a 56 percentage point gap. Students produce C-sweep curves, gamma-sweep curves, and a 2D heatmap across a C-gamma grid. <code>GridSearchCV</code> finds the well-regularised configuration: overfitting SVM (5,670 support vectors, 10pp gap) vs tuned SVM (1,554 support vectors, ~1pp gap).</div>
+  </div>
+</div>
+
+<!-- ── Challenge 12 ── -->
+<h2 class="sh">Notebook 12 Challenges</h2>
+
+<div class="challenge-card">
+  <div class="challenge-header">
+    <div class="challenge-num">12</div>
+    <div class="challenge-title-block">
+      <div class="challenge-title"><span class="badge-ch">Challenge</span>Comparing SVM, Random Forest, and MLP: Stock Market Movement Prediction</div>
+      <div class="challenge-file">📁 Notebook_12/Challenge_12.ipynb &nbsp;·&nbsp; data: Notebook_12/data/market.csv</div>
+    </div>
+  </div>
+  <div class="challenge-body">
+    <p>A quantitative finance classification problem using technical indicators and market context features. Each sample represents one trading day's end-of-day measurements for a stock. The task is to predict next-day price movement direction: <strong>down</strong> (&gt;0.5% fall), <strong>flat</strong> (within ±0.5%), or <strong>up</strong> (&gt;0.5% rise), with a 29/38/33 distribution.</p>
+    <table class="var-table">
+      <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>rsi_14</code></td><td>14-day Relative Strength Index [0–100]</td></tr>
+        <tr><td><code>macd_signal</code></td><td>MACD signal line value</td></tr>
+        <tr><td><code>bb_position</code></td><td>Bollinger Band position: (price − lower) / (upper − lower) [0–1]</td></tr>
+        <tr><td><code>volume_ratio</code></td><td>Today's volume / 20-day average</td></tr>
+        <tr><td><code>atr_pct</code></td><td>Average True Range as % of price (volatility measure)</td></tr>
+        <tr><td><code>price_momentum_5d</code></td><td>5-day price return [%]</td></tr>
+        <tr><td><code>ma_cross</code></td><td>(5-day MA / 20-day MA) − 1 (trend signal)</td></tr>
+        <tr><td><code>overnight_gap</code></td><td>(open − prior close) / prior close [%]</td></tr>
+        <tr><td><code>market_sentiment</code></td><td>Composite sentiment index [−1 to 1]</td></tr>
+        <tr><td><code>sector_beta</code></td><td>Stock beta relative to sector index</td></tr>
+        <tr><td><code>earnings_proximity</code></td><td>Normalised days to nearest earnings announcement [−1 to 1]</td></tr>
+        <tr><td><code>spread_proxy</code></td><td>Bid-ask spread proxy as % of price</td></tr>
+        <tr><td><code>movement</code></td><td>Target label (0=down, 1=flat, 2=up)</td></tr>
+      </tbody>
+    </table>
+    <div class="goal-box"><strong>Goal:</strong> A full multi-classifier comparison following a rigorous no-leakage protocol. All three models are wrapped in <code>Pipeline</code> objects with <code>StandardScaler</code>, ensuring preprocessing parameters are estimated inside each cross-validation fold. Steps through defining pipelines, running 5-fold stratified cross-validation with <code>cross_validate</code>, training final models, evaluating on the sealed test set, plotting confusion matrices, and producing one-vs-rest ROC curves. Students make a reasoned judgement about which model to deploy and why.</div>
+  </div>
+</div>
+
+<footer class="page-foot">
+  <div class="author-line"><strong>Author:</strong> Dr Rob Lyon &nbsp;&middot;&nbsp; <strong>Version:</strong> 1.0 &nbsp;&middot;&nbsp; <a href="https://github.com/scienceguyrob/project-io" target="_blank">github.com/scienceguyrob/project-io</a></div>
+  <h2>Copyright &amp; License</h2>
+  <p>Copyright &copy; 2026 Robert Lyon. All Rights Reserved.</p>
+  <p>These materials are the intellectual property of the author. Permission is granted solely to read, study, and analyse this material for personal educational purposes. No other rights are granted.</p>
+  <p>Without the prior written consent of the author, you may not:</p>
+  <ul>
+    <li>Copy, reproduce, redistribute, publish, transmit, or display this work in whole or in part.</li>
+    <li>Modify, adapt, transform, translate, or create derivative works based on this material.</li>
+    <li>Incorporate any portion of this work into another project, publication, product, model, dataset, or codebase.</li>
+    <li>Use this material for commercial purposes.</li>
+    <li>Remove or alter this copyright notice.</li>
+  </ul>
+  <p>All intellectual property rights remain exclusively vested in the author.</p>
+</footer>
+</div>
+</body>
+</html>
