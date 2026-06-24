@@ -73,7 +73,7 @@ footer.page-foot li{margin-bottom:.2rem}
 <nav class="site-nav">
   <div class="inner">
     <span class="brand">
-      <img src="dook.png" alt="project-io logo">
+      <img src="io.png" alt="This is io the cat.">
       project&#8209;io
     </span>
     <a href="../index.html">Home</a>
@@ -92,7 +92,7 @@ footer.page-foot li{margin-bottom:.2rem}
     <p class="subtitle">A reference for every dataset used across the project-io notebook series and challenge files — including file paths, column descriptions, class distributions, and usage notes.</p>
   </div>
   <div class="page-head-logo">
-    <img src="dook.png" alt="project-io logo">
+
   </div>
 </header>
 
@@ -202,14 +202,15 @@ footer.page-foot li{margin-bottom:.2rem}
 </div>
 
 <!-- ══════════════ NOTEBOOK 7 ══════════════ -->
-<h2 class="sh">Notebook 7</h2>
+<h2 class="sh" id="nb7">Notebook 7</h2>
 
 <div class="ds-card">
   <div class="ds-name"><span class="badge-builtin">Built-in</span>Breast Cancer Wisconsin (Diagnostic) Dataset</div>
-  <div class="ds-meta">Loaded via <code>sklearn.datasets.load_breast_cancer()</code> &nbsp;·&nbsp; 569 rows &nbsp;·&nbsp; 30 features &nbsp;·&nbsp; Binary target</div>
+  <div class="ds-meta">Loaded via <code>sklearn.datasets.load_breast_cancer()</code> &nbsp;·&nbsp; 569 rows &nbsp;·&nbsp; 30 features &nbsp;·&nbsp; Binary target &nbsp;·&nbsp; Used in Notebooks 7 &amp; 13</div>
   <div class="ds-desc">
     <p>Each row represents a tumour biopsy. The 30 numeric features are computed from a digitised image of a needle biopsy sample and are organised into three groups of 10 (mean, standard error, and worst) describing characteristics of cell nuclei.</p>
     <p>The target variable is binary: <strong>0 = Malignant</strong>, <strong>1 = Benign</strong>. The dataset is class-imbalanced: approximately 63% Benign and 37% Malignant.</p>
+    <p>Used in Notebook 7 for visualisation and feature selection examples. Also used in Notebook 13 as the primary benchmark for comparing bagging ensembles and AdaBoost — a 100-tree bagging ensemble and a 200-stump AdaBoost model are both trained and evaluated on this dataset.</p>
   </div>
   <table class="var-table">
     <thead><tr><th>Feature group</th><th>Examples</th><th>How computed</th></tr></thead>
@@ -326,6 +327,17 @@ footer.page-foot li{margin-bottom:.2rem}
   <div class="ds-meta">📁 Notebook_5/data/sea_state.csv &nbsp;·&nbsp; Synthetic &nbsp;·&nbsp; Binary target &nbsp;·&nbsp; 6 features</div>
   <div class="ds-desc">
     <p>Operational oceanography buoy measurements. Binary classification of sea state as calm (0) or storm (1). The <code>sst_anomaly_c</code> feature contributes little predictive signal, which students should identify from KDE plots before fitting. See the <a href="challenges.html">Challenges</a> page for the full feature list.</p>
+  </div>
+</div>
+
+<!-- ══════════════ NOTEBOOK 13 ══════════════ -->
+<h2 class="sh">Notebook 13</h2>
+
+<div class="ds-card">
+  <div class="ds-name"><span class="badge-builtin">Built-in</span>Breast Cancer Wisconsin (Diagnostic) Dataset</div>
+  <div class="ds-meta">Loaded via <code>sklearn.datasets.load_breast_cancer()</code> &nbsp;·&nbsp; 569 rows &nbsp;·&nbsp; 30 features &nbsp;·&nbsp; Binary target</div>
+  <div class="ds-desc">
+    <p>Notebook 13 uses the same Wisconsin Breast Cancer dataset documented in the Notebook 7 section above. It serves as the primary benchmark for the ensemble learning experiments: a 100-tree bagging ensemble (Section 5.5) and a 200-stump AdaBoost model (Section 7.4) are trained, evaluated, and compared side by side on this dataset. See the <a href="#nb7">Notebook 7 entry</a> for the full feature and class description.</p>
   </div>
 </div>
 

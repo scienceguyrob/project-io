@@ -321,7 +321,7 @@ footer.page-foot li { margin-bottom: .2rem; }
 
 <nav class="site-nav">
   <div class="inner">
-    <span class="brand"><img src="dook.png" alt="project-io logo" style="width:26px;height:26px;border-radius:5px;object-fit:cover;vertical-align:middle;margin-right:.4rem;">project&#8209;io</span>
+    <span class="brand"><img src="io.png" alt="This is io the cat." style="width:26px;height:26px;border-radius:5px;object-fit:cover;vertical-align:middle;margin-right:.4rem;">project&#8209;io</span>
     <a href="../index.html">Home</a>
     <a href="search.html">Notebook Index</a>
     <a href="challenges.html">Challenges</a>
@@ -361,7 +361,7 @@ footer.page-foot li { margin-bottom: .2rem; }
 <h2 class="sh">2. Pulling the Image</h2>
 <p class="prose">Before you can run a container you need to download the image. Open a terminal (macOS: Terminal or iTerm; Windows: Command Prompt or PowerShell) and run:</p>
 <pre>docker pull project-io</pre>
-<p class="prose">Replace <code>&lt;image-name&gt;</code> with the image name you have been given. This downloads the image to your machine. You only need to do this once (or again later if an updated version is released).</p>
+<p class="prose">This downloads the project-io image to your machine. You only need to do this once (or again later if an updated version is released).</p>
 
 <!-- ══════════════════════════════════════════════════
      3. STARTING THE CONTAINER
@@ -399,7 +399,15 @@ footer.page-foot li { margin-bottom: .2rem; }
   <code>http://localhost:8888/files/web/challenges.html</code><br>
   <code>http://localhost:8888/files/web/data.html</code><br>
   <code>http://localhost:8888/files/web/how_to.html</code><br><br>
-  Simply type or paste the address into your browser's address bar.
+  Simply type or paste the address into your browser's address bar.<br><br>
+  <strong>What does <code>/files/</code> mean in these URLs?</strong><br>
+  There is no folder called <code>files</code> inside the container — it is a fixed keyword that JupyterLab recognises in its URL scheme. When JupyterLab sees <code>/files/</code> in a URL it translates the request into a direct file download, serving the file as a raw webpage in your browser. Without it, JupyterLab would try to open the file inside its own editor interface instead. Everything after <code>/files/</code> is the actual path to the file inside the container. For example:<br><br>
+  <code>http://localhost:8888/files/web/search.html</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;→ serves <code>web/search.html</code> from the container's working directory as a webpage<br><br>
+  Contrast this with the URL pattern used to open a notebook in the editor:<br><br>
+  <code>http://localhost:8888/lab/tree/Notebook_3/Notebook_3.ipynb</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;→ opens <code>Notebook_3/Notebook_3.ipynb</code> inside JupyterLab<br><br>
+  Use <code>/files/</code> for HTML pages. Use <code>/lab/tree/</code> for notebooks.
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -422,15 +430,15 @@ docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
 <p class="prose">Add the <code>-v</code> flag to your <code>docker run</code> command:</p>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">macOS</h4>
-<pre>docker run -p 8888:8888 -v /Users/yourname/ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+<pre>docker run -p 8888:8888 -v /Users/yourname/ml-work:/home/notebook/work project-io</pre>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (Command Prompt)</h4>
-<pre>docker run -p 8888:8888 -v C:\Users\yourname\ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+<pre>docker run -p 8888:8888 -v C:\Users\yourname\ml-work:/home/notebook/work project-io</pre>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (PowerShell)</h4>
-<pre>docker run -p 8888:8888 -v C:/Users/yourname/ml-work:/home/jovyan/work &lt;image-name&gt;</pre>
+<pre>docker run -p 8888:8888 -v C:/Users/yourname/ml-work:/home/notebook/work project-io</pre>
 
-<p class="prose">Replace <code>/Users/yourname/ml-work</code> (macOS) or <code>C:\Users\yourname\ml-work</code> (Windows) with the actual path to a folder on your machine. Inside the container, the folder will appear at <code>/home/jovyan/work</code> and will be visible in the JupyterLab file browser under the <code>work</code> directory.</p>
+<p class="prose">Replace <code>/Users/yourname/ml-work</code> (macOS) or <code>C:\Users\yourname\ml-work</code> (Windows) with the actual path to a folder on your machine. Inside the container, the folder will appear at <code>/home/notebook/work</code> and will be visible in the JupyterLab file browser under the <code>work</code> directory.</p>
 <p class="prose">Any file you save into that <code>work</code> folder from inside JupyterLab will immediately appear in the folder on your machine, and vice versa.</p>
 
 <div class="warn-box">
@@ -441,10 +449,10 @@ docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
 <p class="prose">If you need to copy a specific file rather than mounting a whole folder, use <code>docker cp</code>. This works while the container is running.</p>
 
 <p class="prose"><strong>Copy a file from your machine into the container:</strong></p>
-<pre>docker cp /path/to/myfile.csv &lt;container-id&gt;:/home/jovyan/myfile.csv</pre>
+<pre>docker cp /path/to/myfile.csv &lt;container-id&gt;:/home/notebook/myfile.csv</pre>
 
 <p class="prose"><strong>Copy a file from the container to your machine:</strong></p>
-<pre>docker cp &lt;container-id&gt;:/home/jovyan/myfile.csv /path/to/destination/</pre>
+<pre>docker cp &lt;container-id&gt;:/home/notebook/myfile.csv /path/to/destination/</pre>
 
 <p class="prose">To find the container ID, run <code>docker ps</code> in a separate terminal while the container is running. The ID is the first column of the output.</p>
 
@@ -472,15 +480,15 @@ docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
   <tbody>
     <tr><td>Pull the image</td><td><code>docker pull project-io</code></td></tr>
     <tr><td>Start the container</td><td><code>docker run -p 8888:8888 project-io</code></td></tr>
-    <tr><td>Start with a volume mount</td><td><code>docker run -p 8888:8888 -v /your/folder:/home/jovyan/work project-io</code></td></tr>
+    <tr><td>Start with a volume mount</td><td><code>docker run -p 8888:8888 -v /your/folder:/home/notebook/work project-io</code></td></tr>
     <tr><td>Open JupyterLab</td><td><code>http://localhost:8888</code></td></tr>
     <tr><td>Open the home page</td><td><code>http://localhost:8888/files/index.html</code></td></tr>
     <tr><td>Open the notebook search index</td><td><code>http://localhost:8888/files/web/search.html</code></td></tr>
     <tr><td>Open a specific notebook</td><td><code>http://localhost:8888/lab/tree/Notebook_N/Notebook_N.ipynb</code></td></tr>
     <tr><td>List running containers</td><td><code>docker ps</code></td></tr>
     <tr><td>Stop the container</td><td><code>Ctrl + C</code> in the terminal, or <code>docker stop &lt;id&gt;</code></td></tr>
-    <tr><td>Copy file into container</td><td><code>docker cp file.csv &lt;id&gt;:/home/jovyan/file.csv</code></td></tr>
-    <tr><td>Copy file out of container</td><td><code>docker cp &lt;id&gt;:/home/jovyan/file.csv ./</code></td></tr>
+    <tr><td>Copy file into container</td><td><code>docker cp file.csv &lt;id&gt;:/home/notebook/file.csv</code></td></tr>
+    <tr><td>Copy file out of container</td><td><code>docker cp &lt;id&gt;:/home/notebook/file.csv ./</code></td></tr>
   </tbody>
 </table>
 

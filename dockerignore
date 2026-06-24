@@ -1,0 +1,46 @@
+# =============================================================================
+# .dockerignore — keeps the build context lean
+# Place this file at the project root (same level as the Dockerfile's
+# COPY targets), not inside the docker/ folder.
+# =============================================================================
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker folder itself (no need to copy it into the image)
+docker/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build / dist artefacts
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
