@@ -1,4 +1,4 @@
-<img src="web/project_io_banner.png" alt="project-io logo" width="500">
+<img src="web/project_io_banner_higher_res.png" alt="project-io logo" width="500">
 
 # project-io
 
