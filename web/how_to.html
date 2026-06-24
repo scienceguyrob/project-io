@@ -321,7 +321,7 @@ footer.page-foot li { margin-bottom: .2rem; }
 
 <nav class="site-nav">
   <div class="inner">
-    <span class="brand"><img src="io.png" alt="This is io the cat." style="width:26px;height:26px;border-radius:5px;object-fit:cover;vertical-align:middle;margin-right:.4rem;">project&#8209;io</span>
+    <span class="brand"><img src="io.png" alt="project-io logo" style="width:26px;height:26px;border-radius:5px;object-fit:cover;vertical-align:middle;margin-right:.4rem;">project&#8209;io</span>
     <a href="../index.html">Home</a>
     <a href="search.html">Notebook Index</a>
     <a href="challenges.html">Challenges</a>
@@ -360,8 +360,8 @@ footer.page-foot li { margin-bottom: .2rem; }
 ══════════════════════════════════════════════════ -->
 <h2 class="sh">2. Pulling the Image</h2>
 <p class="prose">Before you can run a container you need to download the image. Open a terminal (macOS: Terminal or iTerm; Windows: Command Prompt or PowerShell) and run:</p>
-<pre>docker pull project-io</pre>
-<p class="prose">This downloads the project-io image to your machine. You only need to do this once (or again later if an updated version is released).</p>
+<pre>docker pull scienceguyrob/project-io</pre>
+<p class="prose">This downloads the project-io image to your machine from <a href="https://hub.docker.com/r/scienceguyrob/project-io" target="_blank">Docker Hub</a>. You only need to do this once (or again later if an updated version is released).</p>
 
 <!-- ══════════════════════════════════════════════════
      3. STARTING THE CONTAINER
@@ -370,10 +370,10 @@ footer.page-foot li { margin-bottom: .2rem; }
 <p class="prose">The command below starts the container and maps JupyterLab to port 8888 on your machine. Run it from a terminal.</p>
 
 <h3 class="sh3">macOS</h3>
-<pre>docker run -p 8888:8888 project-io</pre>
+<pre>docker run -p 8888:8888 scienceguyrob/project-io</pre>
 
 <h3 class="sh3">Windows (Command Prompt or PowerShell)</h3>
-<pre>docker run -p 8888:8888 project-io</pre>
+<pre>docker run -p 8888:8888 scienceguyrob/project-io</pre>
 
 <p class="prose">The command is the same on both platforms. After a few seconds you will see output from JupyterLab in your terminal. Leave this terminal open — closing it stops the container.</p>
 
@@ -430,13 +430,13 @@ docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
 <p class="prose">Add the <code>-v</code> flag to your <code>docker run</code> command:</p>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">macOS</h4>
-<pre>docker run -p 8888:8888 -v /Users/yourname/ml-work:/home/notebook/work project-io</pre>
+<pre>docker run -p 8888:8888 -v /Users/yourname/ml-work:/home/notebook/work scienceguyrob/project-io</pre>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (Command Prompt)</h4>
-<pre>docker run -p 8888:8888 -v C:\Users\yourname\ml-work:/home/notebook/work project-io</pre>
+<pre>docker run -p 8888:8888 -v C:\Users\yourname\ml-work:/home/notebook/work scienceguyrob/project-io</pre>
 
 <h4 style="font-size:.88rem;color:var(--ink-soft);margin:.9rem 0 .3rem;font-weight:700">Windows (PowerShell)</h4>
-<pre>docker run -p 8888:8888 -v C:/Users/yourname/ml-work:/home/notebook/work project-io</pre>
+<pre>docker run -p 8888:8888 -v C:/Users/yourname/ml-work:/home/notebook/work scienceguyrob/project-io</pre>
 
 <p class="prose">Replace <code>/Users/yourname/ml-work</code> (macOS) or <code>C:\Users\yourname\ml-work</code> (Windows) with the actual path to a folder on your machine. Inside the container, the folder will appear at <code>/home/notebook/work</code> and will be visible in the JupyterLab file browser under the <code>work</code> directory.</p>
 <p class="prose">Any file you save into that <code>work</code> folder from inside JupyterLab will immediately appear in the folder on your machine, and vice versa.</p>
@@ -478,9 +478,9 @@ docker stop &lt;container-id&gt;       # stops the container gracefully</pre>
 <table>
   <thead><tr><th>Task</th><th>Command / URL</th></tr></thead>
   <tbody>
-    <tr><td>Pull the image</td><td><code>docker pull project-io</code></td></tr>
-    <tr><td>Start the container</td><td><code>docker run -p 8888:8888 project-io</code></td></tr>
-    <tr><td>Start with a volume mount</td><td><code>docker run -p 8888:8888 -v /your/folder:/home/notebook/work project-io</code></td></tr>
+    <tr><td>Pull the image</td><td><code>docker pull scienceguyrob/project-io</code></td></tr>
+    <tr><td>Start the container</td><td><code>docker run -p 8888:8888 scienceguyrob/project-io</code></td></tr>
+    <tr><td>Start with a volume mount</td><td><code>docker run -p 8888:8888 -v /your/folder:/home/notebook/work scienceguyrob/project-io</code></td></tr>
     <tr><td>Open JupyterLab</td><td><code>http://localhost:8888</code></td></tr>
     <tr><td>Open the home page</td><td><code>http://localhost:8888/files/index.html</code></td></tr>
     <tr><td>Open the notebook search index</td><td><code>http://localhost:8888/files/web/search.html</code></td></tr>

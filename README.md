@@ -6,6 +6,66 @@ A self-paced series of Jupyter notebooks covering Python programming, statistics
 
 ---
 
+## Quick Start
+
+The easiest way to run project-io is to pull the pre-built image from Docker Hub. You do not need to clone this repository or install Python.
+
+**Step 1 — Pull the image:**
+
+```bash
+docker pull scienceguyrob/project-io
+```
+
+**Step 2 — Run the container:**
+
+```bash
+docker run --rm -p 8888:8888 scienceguyrob/project-io
+```
+
+**Step 3 — Open your browser** and go to:
+
+```
+http://localhost:8888
+```
+
+JupyterLab will open with all notebooks and files ready to use. No password or token is required.
+
+The image is available on Docker Hub at [hub.docker.com/r/scienceguyrob/project-io](https://hub.docker.com/r/scienceguyrob/project-io).
+
+---
+
+## Saving Your Work
+
+By default, changes made inside the container are lost when it stops. To persist your work, mount a local folder into the container:
+
+```bash
+# macOS and Linux
+docker run --rm -p 8888:8888 \
+  -v /path/to/your/work:/home/notebook/work \
+  scienceguyrob/project-io
+
+# Windows (PowerShell)
+docker run --rm -p 8888:8888 -v C:/Users/YourName/work:/home/notebook/work scienceguyrob/project-io
+```
+
+A `work/` directory will appear in the JupyterLab file browser. Anything saved there is written to your local machine immediately and survives the container stopping.
+
+### Port conflicts
+
+If port 8888 is already in use, map the container to a different local port:
+
+```bash
+docker run --rm -p 8889:8888 scienceguyrob/project-io
+```
+
+Then open `http://localhost:8889` instead.
+
+### Full Docker instructions
+
+See [`docker/DOCKER_BUILD.md`](docker/DOCKER_BUILD.md) for complete step-by-step instructions covering macOS, Windows, and Linux, including Docker installation, volume mounts, and troubleshooting.
+
+---
+
 ## Notebooks
 
 The series currently has 14 numbered notebooks plus 3 bonus notebooks, organised so each one builds on the previous.
@@ -89,17 +149,17 @@ All challenge datasets are synthetic but are grounded in the physics, geometry, 
 
 ```
 project-io/
-├── index.html                        ← series home page
+├── index.html                        <- series home page
 ├── web/
-│   ├── search.html                   ← searchable index of all topics
-│   ├── challenges.html               ← challenge reference guide
-│   ├── data.html                     ← dataset reference
-│   ├── how_to.html                   ← container usage guide
-│   └── dook.png                      ← project logo
+│   ├── search.html                   <- searchable index of all topics
+│   ├── challenges.html               <- challenge reference guide
+│   ├── data.html                     <- dataset reference
+│   ├── how_to.html                   <- container usage guide
+│   └── dook.png                      <- project logo
 ├── docker/
-│   ├── Dockerfile                    ← builds the project-io image
-│   ├── .dockerignore                 ← excludes unnecessary files from the build
-│   └── DOCKER_BUILD.md               ← step-by-step build and run instructions
+│   ├── Dockerfile                    <- builds the project-io image
+│   ├── .dockerignore                 <- excludes unnecessary files from the build
+│   └── DOCKER_BUILD.md               <- step-by-step build and run instructions
 ├── Notebook_0/
 │   └── Notebook_0.ipynb
 ├── Notebook_1/
@@ -107,7 +167,7 @@ project-io/
 │   ├── visualisations/
 │   │   └── Figure_N.py
 │   └── data/
-├── Notebook_2/ ... Notebook_13/      ← same structure throughout
+├── Notebook_2/ ... Notebook_13/      <- same structure throughout
 ├── Notebook_6_Bonus/
 ├── Notebook_7_Bonus/
 └── Notebook_8_Bonus/
@@ -117,12 +177,12 @@ Each numbered notebook folder follows the same pattern:
 
 ```
 Notebook_N/
-├── Notebook_N.ipynb          ← main notebook
-├── Challenge_N.ipynb         ← paired challenge (where one exists)
+├── Notebook_N.ipynb          <- main notebook
+├── Challenge_N.ipynb         <- paired challenge (where one exists)
 ├── visualisations/
-│   └── Figure_N.py           ← interactive figure scripts
+│   └── Figure_N.py           <- interactive figure scripts
 └── data/
-    └── *.csv                 ← datasets for that notebook
+    └── *.csv                 <- datasets for that notebook
 ```
 
 ---
@@ -148,61 +208,16 @@ The `/files/` prefix is a JupyterLab URL keyword that serves a file as a raw web
 
 ---
 
-## Running with Docker
+## Building from Source
 
-The recommended way to run project-io is via Docker, which provides a pre-configured environment with all dependencies installed and version-pinned. No Python installation is required on your machine.
-
-### Quick start
-
-**Step 1 — Build the image** from the project root:
+If you prefer to build the image yourself rather than pulling it from Docker Hub, clone the repository and run the following from the project root:
 
 ```bash
 docker build -f docker/Dockerfile -t project-io .
-```
-
-**Step 2 — Run the container:**
-
-```bash
 docker run --rm -p 8888:8888 project-io
 ```
 
-**Step 3 — Open your browser** and go to:
-
-```
-http://localhost:8888
-```
-
-JupyterLab will open with all notebooks and files ready to use. No password or token is required.
-
-### Saving your work
-
-By default, changes made inside the container are lost when it stops. To persist your work, mount a local folder into the container:
-
-```bash
-# macOS and Linux
-docker run --rm -p 8888:8888 \
-  -v /path/to/your/work:/home/notebook/work \
-  project-io
-
-# Windows (PowerShell)
-docker run --rm -p 8888:8888 -v C:/Users/YourName/work:/home/notebook/work project-io
-```
-
-A `work/` directory will appear in the JupyterLab file browser. Anything saved there is written to your local machine immediately and survives the container stopping.
-
-### Port conflicts
-
-If port 8888 is already in use, map the container to a different local port:
-
-```bash
-docker run --rm -p 8889:8888 project-io
-```
-
-Then open `http://localhost:8889` instead.
-
-### Full instructions
-
-See [`docker/DOCKER_BUILD.md`](docker/DOCKER_BUILD.md) for complete step-by-step instructions covering macOS, Windows, and Linux, including Docker installation, volume mounts, troubleshooting, and how to push to Docker Hub.
+See [`docker/DOCKER_BUILD.md`](docker/DOCKER_BUILD.md) for full instructions.
 
 ---
 
