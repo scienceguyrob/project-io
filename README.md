@@ -1,3 +1,5 @@
+<img src="web/project_io_banner.png" alt="project-io logo" width="500">
+
 # project-io
 
 A self-paced series of Jupyter notebooks covering Python programming, statistics, classical machine learning, ensemble methods, neural networks, unsupervised learning, and model evaluation. Built to help anyone learn machine learning from the ground up, starting with no assumed programming knowledge.
